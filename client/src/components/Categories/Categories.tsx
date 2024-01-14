@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 export default function Categories() {
   return (
-    <section>
+
       <div className="container-custom my-4">
         {/* <h5 className="text-center mb-4 h3-steps">SHOP BY COLLECTION</h5> */}
         <div className="row">
@@ -26,22 +26,26 @@ export default function Categories() {
 
           <div className="col-12 col-sm-4 mb-4">
             <div className="steps__image-container">
+            <Link to="/category/walk">
               <img
                 src={walk}
                 alt="Leashes"
                 className="img-fluid pb-2 steps__section-thumbnail" 
               />
+            </Link>
               <div className="steps__overlay"><h2>WALK</h2></div>
             </div>
           </div>
 
           <div className="col-12 col-sm-4 mb-4">
             <div className="steps__image-container">
+            <Link to="/category/play">
               <img
                 src={play}
                 alt="Toys"
-                className="img-fluid pb-2 steps__section-thumbnail" // Adjusted padding value
+                className="img-fluid pb-2 steps__section-thumbnail" 
               />
+            </Link>
               <div className="steps__overlay"><h2>PLAY</h2></div>
             </div>
           </div>
@@ -58,6 +62,6 @@ export default function Categories() {
         </div>
 
         
-    </section>
+
   );
 }

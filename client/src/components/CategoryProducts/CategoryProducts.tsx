@@ -33,7 +33,7 @@ const CategoryProducts: React.FC = () => {
 
   return (
     <div className="container mt-4">
-      <h2 className="text-center">{category} Products</h2>
+      {/* <h2 className="text-center">{category} Products</h2> */}
       {/* Skicka bara filtrerade produkter till ProductList */}
       <ProductList products={products} />
     </div>

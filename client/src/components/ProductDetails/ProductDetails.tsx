@@ -67,14 +67,14 @@ const ProductDetails: React.FC = () => {
               alt={product.productName}
             />
           </div>
-          <div className="col-md-6">
+          <div className="product-text col-md-6">
             <h2>{product.productName}</h2>
             <p className="price">€ {product.price} </p>
             <div className="rating">{product.rating}</div>
             <p>{product.description}</p>
             <div className="quantity-controls">
               <button onClick={decreaseQuantity}>-</button>
-              <span className="quantity">{quantity}</span>
+              <button className="quantity">{quantity}</button>
               <button onClick={increaseQuantity}>+</button>
             </div>
             <button className="btn btn-dark mt-2" onClick={addToCartHandler}>
