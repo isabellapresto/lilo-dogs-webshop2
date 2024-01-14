@@ -1,0 +1,38 @@
+.image-container {
+ position: relative;
+ overflow: hidden;
+}
+
+.hover-image {
+ position: absolute;
+ top: 0;
+ left: 0;
+ opacity: 0;
+
+}
+
+.image-container:hover .hover-image {
+ opacity: 1;
+}
+
+.dog-bed {
+ color: #403C39;
+}
+
+.bestseller{
+ color: #403C39;
+ padding: 25px;
+ padding-bottom: 40px;
+
+}
+
+p {
+ font-size: 13px;
+}
+
+
+
+span{
+ color: #eed260d6;
+ font-size: 13px;
+}

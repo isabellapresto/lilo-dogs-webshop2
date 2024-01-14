@@ -1,0 +1,42 @@
+.h3-steps{
+
+  color: #403C39;
+  padding: 25px;
+  padding-bottom: 40px;
+ 
+
+}
+
+.steps__image-container {
+ position: relative;
+ overflow: hidden;
+ transition: transform 0.3s ease-in-out;
+}
+
+.steps__overlay {
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ color: #FEF9EA;
+ font-size: 18px;
+ opacity: 1; /* Set the default opacity to 1 to make the text always visible */
+ transition: transform 0.3s ease-in-out;
+}
+
+.steps__image-container:hover {
+ transform: scale(1.1);
+}
+
+.steps__section-thumbnail {
+ max-width: 100%;
+ height: auto;
+}
+
+.steps--background {
+ background-color: #FEF9EA;
+}
+
+button{
+  font-size: 13px;
+}

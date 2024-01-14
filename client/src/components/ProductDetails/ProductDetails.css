@@ -1,0 +1,31 @@
+.product-image {
+ border-radius: 8px;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.price {
+ font-size: 1.2rem;
+ font-weight: bold;
+ color: #333;
+}
+
+.rating {
+ font-size: 1.5rem;
+ color: #eed260d6;
+ margin-bottom: 10px;
+}
+
+button{
+ border: none;
+ font-size: 1.2rem;
+ background-color: transparent;
+}
+.quantity {
+ font-size: 1.2rem;
+
+ margin: 0 10px;
+}
+.product-details-container {
+ margin-top: 200px; 
+}
+

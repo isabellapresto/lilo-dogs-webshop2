@@ -1,0 +1,12 @@
+
+GET http://localhost:3001/api/products
+// collection ligger under test
+
+###
+
+GET http://localhost:3001/api/products/6596efc4979f570f698b5662
+
+###
+
+GET http://localhost:3001/api/products/category/sleep
+###
