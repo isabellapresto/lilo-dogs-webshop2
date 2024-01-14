@@ -27,8 +27,8 @@ const ProductList: React.FC = () => {
   }, []);
 
   return (
-    <div className="container mt-4">
-      <h2 className="text-center">Product List</h2>
+    <div className="product-list-container container mt-4">
+      {/* <h2 className="text-center">Product List</h2> */}
       <div className="row">
         {products.map(product => (
           <div key={product._id} className="col-md-4 mb-4">
@@ -37,7 +37,6 @@ const ProductList: React.FC = () => {
                 <div className="square-image-container">
                   <img
                     src={product.image}
-                    className="card-img-top"
                     alt={product.productName}
                   />
                 </div>
