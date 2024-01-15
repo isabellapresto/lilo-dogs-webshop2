@@ -1,15 +1,18 @@
 const express = require('express');
 const cors = require('cors');
 const productRouter = require('./resources/product/product.router');
-const stripe = require ("./stripe")
+const userRouter = require('./resources/user/user.router');  
+// const stripe = require('./stripe');
 
 const app = express();
 
 app.use(cors()); // Enable CORS
 
-// Other middleware and configurations
+app.use(express.json());
+
 
 app.use('/api', productRouter);
-app.use('/api/stripe', stripe);
+app.use('/api/users', userRouter); 
+// app.use('/api/stripe', stripe);
 
 module.exports = { app };
