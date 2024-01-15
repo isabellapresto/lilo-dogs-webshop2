@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 
-export default function RegisterModal({ show, onHide }) {
+export default function RegisterModal({ show, onHide, onSwitchToLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const handleRegister = async () => {
     try {
-      // Skicka användarnamn och lösenord till din backend för registrering
       const response = await fetch('http://localhost:3001/api/users/register', {
         method: 'POST',
         headers: {
@@ -17,47 +18,59 @@ export default function RegisterModal({ show, onHide }) {
       });
 
       if (response.ok) {
-        console.log('Registreringen lyckades!');
-        onHide(); // Stäng modalen efter registrering
+        setSuccess(true);
+        setError('');
+        setUsername(''); // Clear username input
+        setPassword(''); // Clear password input
       } else {
-        console.error('Registreringen misslyckades.');
-        // Visa felmeddelande eller vidta andra åtgärder vid registreringssvårigheter
+        const errorData = await response.json();
+        setError(errorData.message || 'Registreringen misslyckades.');
+        setSuccess(false);
       }
     } catch (error) {
       console.error('Ett fel uppstod vid registrering:', error);
-      // Visa felmeddelande eller vidta andra åtgärder vid registreringssvårigheter
+      setError('Ett fel uppstod vid registrering.');
+      setSuccess(false);
     }
   };
 
   return (
-    <Modal show={show} onHide={onHide}>
+    <Modal show={show} onHide={() => { onHide(); setError(''); setSuccess(false); }}>
       <Modal.Header closeButton>
         <Modal.Title>Register</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
-          <Form.Group controlId="formUsername">
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-          </Form.Group>
-          <Form.Group controlId="formPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Form.Group>
-          <Button variant="primary" onClick={handleRegister}>
-            Register
-          </Button>
-        </Form>
+        {success ? (
+          <div>
+            <p>You are now registered!</p>
+            <Button variant="dark" onClick={onSwitchToLogin}>
+              Login
+            </Button>
+          </div>
+        ) : (
+          <Form>
+            <Form.Group controlId="formUsername" style={{ marginBottom: '10px' }}>
+              <Form.Control
+                type="text"
+                placeholder="Enter your username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group controlId="formPassword" style={{ marginBottom: '10px' }}>
+              <Form.Control
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+            <Button variant="dark" onClick={handleRegister}>
+              Register
+            </Button>
+            {error && <p style={{ color: 'red', marginTop: '10px' }}>{error}</p>}
+          </Form>
+        )}
       </Modal.Body>
     </Modal>
   );
