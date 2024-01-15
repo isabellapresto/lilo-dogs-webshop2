@@ -24,6 +24,7 @@ export default function LoginModal({ show, onHide, onSwitchToRegister }) {
         setError('');
         // Add logic for handling successful login
         console.log('Login successful!');
+        onHide();
       } else {
         // Clear input fields upon unsuccessful login
         setUsername('');
