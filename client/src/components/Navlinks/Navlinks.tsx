@@ -6,6 +6,7 @@ import "./NavLinks.css";
 import Cart from '../Cart/Cart';
 import LoginModal from '../LoginModal/LoginModal';
 import RegisterModal from '../RegisterModal/RegisterModal';
+import { useUser } from "../../../Context/UserContext"
 
 export default function Navlinks() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -14,6 +15,7 @@ export default function Navlinks() {
   const [scrolling, setScrolling] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
+  const { user } = useUser(); // Use the useUser hook to obtain user information
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +29,12 @@ export default function Navlinks() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+    // Hämta den aktuella sökvägen från fönstret
+    const currentPath = window.location.pathname;
+
+    // Kontrollera om den aktuella sökvägen innehåller '/products' eller '/products/:id'
+    const isProductPage = currentPath.includes('/products');
 
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -68,13 +76,15 @@ export default function Navlinks() {
   };
 
   return (
+
+    
     <Navbar
       variant="dark"
       expand="lg"
       fixed="top"
       className="justify-content-start"
       style={{
-        backgroundColor: scrolling ? '#888168' : 'transparent',
+        backgroundColor: isProductPage ? '#888168' : scrolling ? '#888168' : 'transparent',
       }}
     >
       <Container>
@@ -104,10 +114,10 @@ export default function Navlinks() {
 
         <Navbar.Collapse id="basic-navbar-nav" className="d-none d-lg-flex">
           <Nav className="ms-auto">
-            <Nav.Link href="#home">HOME</Nav.Link>
-            <Nav.Link href="#about">SHOP</Nav.Link>
-            <Nav.Link href="#projects">ABOUT US</Nav.Link>
-            {isLoggedIn && <Nav.Link href="#orders">MY ORDERS</Nav.Link>}
+            <Nav.Link href={`/`}>HOME</Nav.Link>
+            <Nav.Link href={`/products`}>SHOP</Nav.Link>     
+            {/* <Nav.Link href="#projects">ABOUT US</Nav.Link> */}
+            {user && <Nav.Link href="#orders">MY ORDERS</Nav.Link>}
           </Nav>
         </Navbar.Collapse>
 
@@ -147,7 +157,7 @@ export default function Navlinks() {
                   ABOUT US
                 </Nav.Link>
               </Nav.Item>
-              {isLoggedIn && (
+              {user && (
                 <Nav.Item>
                   <Nav.Link href="#orders">
                     MY ORDERS

@@ -61,7 +61,7 @@ const CheckoutForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <CardElement />
-      <Button type="submit" variant="dark">To Checkout</Button>
+      <Button type="submit" variant="dark">To Checkout </Button>
     </form>
   );
 };
