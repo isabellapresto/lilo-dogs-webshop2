@@ -1,7 +1,7 @@
 import { Offcanvas } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import CartItems from './CartItems';
-import CheckOutBtn from '../Cart/CheckOutBtn';
+import CheckOutBtn from './CheckOutBtn';
 import { useCart } from '../../../Context/CartContext';
 
 
