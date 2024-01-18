@@ -1,15 +1,20 @@
 const Order = require('../order/order.model');
-const stripe = require('stripe')(process.env.STRIPE_KEY);
+
+const{ initStripe } = require("../../stripe")
+
+const stripe = initStripe()
+
+require("dotenv").config();
 
 const createOrder = async (req, res) => {
   try {
-    const { cart } = req.body;
+    const { cartItems } = req.body;
 
     // Skapa en Checkout-session med Stripe och få tillbaka sessionId
-    const session = await createStripeCheckoutSession(cart);
+    const session = await createStripeCheckoutSession(cartItems);
 
     // Skapa en ny order baserad på varukorgen
-    const order = new Order({ cart });
+    const order = new Order({ cartItems });
     await order.save();
 
     // Skicka tillbaka sessionId som en del av JSON-svaret
@@ -21,18 +26,20 @@ const createOrder = async (req, res) => {
 };
 
 // Funktion skapa en Checkout-session med Stripe
-const createStripeCheckoutSession = async (cart) => {
-  // Anropa Stripe API för att skapa en Checkout-session
+const createStripeCheckoutSession = async (req, res) => {
+ 
+
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
-    line_items: cart.map(item => ({
+    line_items: req.body.cartItems.map(item => ({
       price_data: {
         currency: 'eur',
         product_data: {
-          name: item.productName,
-          images: [item.image],
+          name: item.product.productName,
+          images: [item.product.image],
         },
-        unit_amount: item.price * 100,
+        unit_amount: item.product.price * 100,
       },
       quantity: item.quantity,
     })),
@@ -40,8 +47,8 @@ const createStripeCheckoutSession = async (cart) => {
     success_url: 'http://localhost:5173/success', 
    
   });
-
-  return session;
+console.log(session);
+  res.json(session);
 };
 
 module.exports = { createOrder, createStripeCheckoutSession };

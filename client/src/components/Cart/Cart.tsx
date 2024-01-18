@@ -30,7 +30,7 @@ const Cart = ({ show, onHide }) => {
         <Offcanvas.Title>CART</Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
-        {CartItems.length === 0 ? (
+        {cartItems.length === 0 ? (
           // Visas om varukorgen är tom
           <div style={{ textAlign: 'center' }}>YOUR CART IS EMPTY</div>
         ) : (

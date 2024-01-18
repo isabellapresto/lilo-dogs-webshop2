@@ -70,25 +70,27 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   //Handle payment- redirect to Stripe
   async function handlePayment() {
-    const cartToStripe = cartItems.map((item) => ({
+    // const cartToStripe = cartItems.map((item) => ({
     
-      quantity: item.quantity,
-    
-    }));
+    //   quantity: item.quantity,
+  
+    // }));
+
+    // console.log('Cart items to Stripe:', cartToStripe);
  
-    console.log(cartToStripe);
+
  
-    const response = await fetch("/api/create-checkout-session", {
+    const response = await fetch("http://localhost:3001/api/orders/create-checkout-session", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ items: cartToStripe }),
+      body: JSON.stringify({ cartItems }),
     });
  
-    if (!response.ok) {
-      return;
-    }
+    // if (!response.ok) {
+    //   return;
+    // }
  
     //Save session id to localStorage
     const { url, sessionId } = await response.json();
