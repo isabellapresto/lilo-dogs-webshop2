@@ -22,6 +22,7 @@ const ProductDetails: React.FC = () => {
   };
 
   const addToCartHandler = () => {
+    console.log (product)
     if (product) {
       addToCart(product, quantity);
     }

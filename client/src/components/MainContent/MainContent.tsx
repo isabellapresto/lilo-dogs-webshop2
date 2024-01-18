@@ -6,10 +6,8 @@ import Categories from '../Categories/Categories';
 import ProductList from '../ProductList/ProductList';
 import ProductDetails from '../ProductDetails/ProductDetails';
 import CategoryProducts from '../CategoryProducts/CategoryProducts';
-import CheckOutBtn from '../Cart/CheckOutBtn';
-
+// import CheckOutBtn from '../Cart/CheckOutBtn';
 import CheckOutSuccess from '../CheckOutSuccess';
-// import Carousel from "../Carousel/Carousel"
 
 const MainContent: React.FC = () => {
   return (
@@ -22,15 +20,15 @@ const MainContent: React.FC = () => {
               <Hero />
               <Bestsellers />
               <Categories />
-              {/* <Carousel /> */}
             </div>
           }
         />
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/products" element={<ProductList />} />
-        <Route path="/category/:category" element={<CategoryProducts />} /> 
-        <Route path="/pay" element={<CheckOutBtn/>} /> 
-        <Route path="/success" element={<CheckOutSuccess />} /> 
+        <Route path="/category/:category" element={<CategoryProducts />} />
+        {/* Include CheckOutBtn directly without Elements wrapper */}
+        {/* <Route path="/pay" element={<CheckOutBtn />} /> */}
+        <Route path="/success" element={<CheckOutSuccess />} />
       </Routes>
     </div>
   );

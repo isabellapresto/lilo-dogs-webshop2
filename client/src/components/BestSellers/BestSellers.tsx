@@ -8,8 +8,6 @@ import cloud2 from "../../assets/sleep/cloud2.webp"
 import chew from "../../assets/play/chew.webp"
 import chew2 from "../../assets/play/chew2.webp"
 
-
-
 export default function BestSellers() {
   return (
     <div>
@@ -18,7 +16,7 @@ export default function BestSellers() {
           
           <h5 className="text-center mb-4 bestseller">MEET OUR SEASON BESTSELLERS</h5>
           <div className="row">
-
+            {/* Hårdkodade produkter, hämta med id istället*/}
             <div className="col-12 col-sm-6 col-md-3 mb-4">
               <div className="image-container">
                 <img src={trampliny} alt="Leashes" className="mb-4 img-fluid" />
