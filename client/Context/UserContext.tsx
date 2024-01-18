@@ -1,43 +1,45 @@
 import React, { createContext, useContext, useState } from 'react';
 
 interface UserContextProps {
-  user: User | null;
-  login: (userData: User) => void;
-  logout: () => void;
+  user: User | null;          // Användarobjekt eller null om ingen användare är inloggad
+  login: (userData: User) => void;   
+  logout: () => void;         
 }
+
 
 interface User {
   id: string;
   username: string;
-  // Add other user-related fields as needed
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
- const [user, setUser] = useState<User | null>(null);
+  // State för att hålla den inloggade användaren.
+  const [user, setUser] = useState<User | null>(null);
 
- const login = (userData: User) => {
-   console.log('User logged in:', userData);
-   setUser(userData);
- };
+  // Funktion för att logga in 
+  const login = (userData: User) => {
+    console.log('Användaren har loggat in:', userData);
+    setUser(userData);
+  };
 
- const logout = () => {
-   setUser(null);
- };
+  // Funktion för att logga ut 
+  const logout = () => {
+    setUser(null);
+  };
 
- return (
-   <UserContext.Provider value={{ user, login, logout }}>
-     {children}
-   </UserContext.Provider>
- );
+  return (
+    <UserContext.Provider value={{ user, login, logout }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
-
 
 export const useUser = () => {
   const context = useContext(UserContext);
   if (!context) {
-    throw new Error('useUser must be used within a UserProvider');
+    throw new Error('useUser måste användas inom en UserProvider');
   }
   return context;
 };
