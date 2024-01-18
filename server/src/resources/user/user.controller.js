@@ -1,6 +1,8 @@
 const User = require('./user.model');
 const bcrypt = require('bcrypt');
 
+
+//Registrerar user och sparar i db
 async function registerUser(req, res) {
   try {
     const { username, password } = req.body;
@@ -34,6 +36,9 @@ async function loginUser(req, res) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
+  // Sätt session
+  req.session.userId = user._id;
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -41,6 +46,7 @@ async function loginUser(req, res) {
     }
 
     res.json({ message: 'Login successful' });
+    
   } catch (error) {
     console.error('Error logging in user:', error);
     res.status(500).json({ message: 'Internal Server Error' });

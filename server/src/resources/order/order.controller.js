@@ -14,7 +14,7 @@ const createOrder = async (req, res) => {
     const session = await createStripeCheckoutSession(cartItems);
 
     // Skapa en ny order baserad på varukorgen
-    const order = new Order({ cartItems });
+    const order = new Order({ cartItems, sessionId: session.id });
     await order.save();
 
     // Skicka tillbaka sessionId som en del av JSON-svaret
