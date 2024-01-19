@@ -3,13 +3,16 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Header from './components/Header/Header';
 import MainContent from './components/MainContent/MainContent';
 import Footer from './components/Footer/Footer';
+import "./App.css"
 
 const App: React.FC = () => {
   return (
     <Router>
-      <div>
+      <div className='app-container'>
         <Header />
-        <MainContent />
+        <div className="main-content">
+          <MainContent />
+        </div>
         <Footer />
       </div>
     </Router>

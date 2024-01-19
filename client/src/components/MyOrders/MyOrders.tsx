@@ -21,7 +21,7 @@ const MyOrders: React.FC = () => {
                 <p>Quantity: {order.quantity}</p>
                 <p>Total: ${order.total}</p>
               </div>
-              {/* Add any additional details or buttons here */}
+            
             </div>
           </li>
         ))}
