@@ -33,8 +33,12 @@ export default function Navlinks() {
     // Hämta den aktuella sökvägen från fönstret
     const currentPath = window.location.pathname;
 
-    // Kontrollera om den aktuella sökvägen innehåller '/products' eller '/products/:id'
+    // bakrundsfärg på header 
     const isProductPage = currentPath.includes('/products');
+const isMyOrdersPage = currentPath.includes('/my-orders');
+const isSuccessPage = currentPath.includes('/success');
+const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage || isSuccessPage;
+
 
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -84,7 +88,7 @@ export default function Navlinks() {
       fixed="top"
       className="justify-content-start"
       style={{
-        backgroundColor: isProductPage ? '#888168' : scrolling ? '#888168' : 'transparent',
+        backgroundColor: isProductOrMyOrdersOrSuccessPage || scrolling ? '#888168' : 'transparent'
       }}
     >
       <Container>
@@ -117,7 +121,7 @@ export default function Navlinks() {
             <Nav.Link href={`/`}>HOME</Nav.Link>
             <Nav.Link href={`/products`}>SHOP</Nav.Link>     
             {/* <Nav.Link href="#projects">ABOUT US</Nav.Link> */}
-            {user && <Nav.Link href="#orders">MY ORDERS</Nav.Link>}
+            {user && <Nav.Link href={`/my-orders`}>MY ORDERS</Nav.Link>}
           </Nav>
         </Navbar.Collapse>
 

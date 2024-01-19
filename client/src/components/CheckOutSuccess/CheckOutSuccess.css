@@ -1,0 +1,11 @@
+.success-container {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ height: 100vh; /* Hela sidans höjd */
+}
+
+.centered-text {
+ text-align: center;
+ font-size: 35px;
+}
