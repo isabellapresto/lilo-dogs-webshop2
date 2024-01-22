@@ -1,34 +1,43 @@
-import React, { Dispatch, SetStateAction, createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, Dispatch, SetStateAction } from 'react';
 import { Product } from '../src/Interfaces/ProductInterfaces';
+
+// Hook för att använda localStorage
+const useLocalStorage = (key: string, initialValue: never[]) => {
+  const storedValue = localStorage.getItem(key);
+  const initial = storedValue ? JSON.parse(storedValue) : initialValue;
+
+  const [value, setValue] = useState(initial);
+
+  const setStoredValue = (newValue: unknown) => {
+    setValue(newValue);
+    localStorage.setItem(key, JSON.stringify(newValue));
+  };
+
+  return [value, setStoredValue];
+};
 
 const CartContext = createContext<CartContextProps | undefined>(undefined);
 
 interface CartContextProps {
-  // cart: Product[];             // produkter i varukorgen.
-  addToCart: (product: Product, quantity: number) => void;   
-  cartItems: CartItem[];       // Varukorgsobjekt med id och kvantitet
-  updateQuantity: (productId: string, quantity: number) => void;  
-  removeProduct: (productId: string) => void;   
-  createOrder: () => Promise<void>;   
+  addToCart: (product: Product, quantity: number) => void;
+  cartItems: CartItem[];
+  updateQuantity: (productId: string, quantity: number) => void;
+  removeProduct: (productId: string) => void;
+  createOrder: () => Promise<void>;
   increaseQuantity: (productId: string) => void;
   decreaseQuantity: (productId: string) => void;
-  handlePayment:() => void;
+  handlePayment: () => void;
   setCartItems: Dispatch<SetStateAction<CartItem[]>>;
 }
 
 export type CartItem = {
-  // _id: string;
   quantity: number;
-  // productName: string;
-  // price: number;
-  // image: string
-  product: Product
-
+  product: Product;
 };
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // State för att hålla produkterna i varukorgen
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  //useLocalStorage-hook för att spara varukorgen
+  const [cartItems, setCartItems] = useLocalStorage('shopping-cart', []);
 
   // Funktion för att lägga till en produkt i varukorgen
   const addToCart = (product: Product, quantity: number) => {
@@ -40,7 +49,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Funktion för att uppdatera kvantiteten av en produkt i varukorgen
   const updateQuantity = (productId: string, quantity: number) => {
-    const updatedCart = cartItems.map((item) =>
+    const updatedCart = cartItems.map((item: { product: { _id: string; }; }) =>
       item.product._id === productId ? { ...item, quantity } : item
     );
     setCartItems(updatedCart);
@@ -48,13 +57,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Funktion för att ta bort en produkt från varukorgen
   const removeProduct = (productId: string) => {
-    const updatedCart = cartItems.filter((item) => item.product._id !== productId);
+    const updatedCart = cartItems.filter((item: { product: { _id: string; }; }) => item.product._id !== productId);
     setCartItems(updatedCart);
   };
 
   // Funktion för att öka kvantiteten av en produkt i varukorgen
   const increaseQuantity = (productId: string) => {
-    const product = cartItems.find(item => item.product._id === productId);
+    const product = cartItems.find((item: { product: { _id: string; }; }) => item.product._id === productId);
     if (product) {
       updateQuantity(productId, product.quantity + 1);
     }
@@ -62,7 +71,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Funktion för att minska kvantiteten av en produkt i varukorgen
   const decreaseQuantity = (productId: string) => {
-    const product = cartItems.find(item => item.product._id === productId);
+    const product = cartItems.find((item: { product: { _id: string; }; }) => item.product._id === productId);
     if (product && product.quantity > 1) {
       updateQuantity(productId, product.quantity - 1);
     }
@@ -133,6 +142,9 @@ const createOrder = async () => {
 
       // Omdirigering till Stripe Checkout med hjälp av sessionId
       window.location.href = `https://checkout.stripe.com/checkout/session/${sessionId}`;
+     
+      clearCart();
+   
     } else {
       console.error('Failed to create order.');
       
@@ -141,6 +153,9 @@ const createOrder = async () => {
     console.error('An error occurred:', error);
    
   }
+};
+const clearCart = () => {
+  setCartItems([]); // Tömmer kundvagnen genom att sätta cartItems till en tom array
 };
 
 
