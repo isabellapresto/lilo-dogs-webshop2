@@ -10,6 +10,7 @@ require("dotenv").config();
 
 // Funktion skapa en Checkout-session med Stripe
 const createStripeCheckoutSession = async (req, res) => {
+  try{
  
 
 
@@ -32,30 +33,31 @@ const createStripeCheckoutSession = async (req, res) => {
    
   });
   console.log('Created Stripe session:', session);
-console.log(session);
-  res.json(session);
+// Call createOrder function to save the order to the database
+await createOrder(req.body.cartItems, session.id);
+
+res.json(session);
+
+} catch (error) {
+console.error('An error occurred in createStripeCheckoutSession:', error);
+res.status(500).json({ message: 'Internal Server Error' });
+}
 };
 
-const createOrder = async (req, res) => {
+const createOrder = async (cartItems, sessionId) => {
   try {
-    const { cartItems } = req.body; // Ändra här för att hämta direkt från req.body
+    // Create a new order 
+    const order = new Order({ cart: cartItems, sessionId });
 
-    console.log('Received cartItems :) :) :):', cartItems);
-
-    // Skapa en Checkout-session med Stripe och få tillbaka sessionId
-    const session = await createStripeCheckoutSession(cartItems);
-
-    // Skapa en ny order baserad på varukorgen
-    const order = new Order({ cart: cartItems, sessionId: session.id });
+    // Save the order to the database
     await order.save();
 
     console.log('Order created successfully');
 
-    // Skicka tillbaka sessionId som en del av JSON-svaret
-    res.json({ sessionId: session.id, message: 'Order created successfully' });
+
   } catch (error) {
     console.error('Error creating order:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    throw error; 
   }
 };
 
