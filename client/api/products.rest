@@ -11,3 +11,21 @@ GET http://localhost:3001/api/products/6596efc4979f570f698b5662
 GET http://localhost:3001/api/products/category/sleep
 ###
 
+POST http://localhost:3001/api/orders/create-order
+Content-Type: application/json
+
+[
+  {
+    "productName": "Product 1",
+    "image": "url-to-image",
+    "price": 10,
+    "quantity": 2
+  },
+  {
+    "productName": "Product 2",
+    "image": "url-to-image",
+    "price": 15,
+    "quantity": 1
+  }
+
+]

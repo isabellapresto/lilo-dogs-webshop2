@@ -35,7 +35,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const cartItem: CartItem= {   quantity: quantity,   product: product };
     const updatedCart = [...cartItems, { ...cartItem, quantity }];
     setCartItems(updatedCart);
-    console.log(updatedCart)
+    console.log("updated cart!!!!", updatedCart)
   };
 
   // Funktion för att uppdatera kvantiteten av en produkt i varukorgen
@@ -107,12 +107,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 const createOrder = async () => {
   try {
     // Skapa en beställning
+    console.log('Sending cartItems:', cartItems);
     const response = await fetch('http://localhost:3001/api/orders/create-order', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ cartItems }),
+      body: JSON.stringify({ cartItems })
+    
     });
 
     if (response.ok) {

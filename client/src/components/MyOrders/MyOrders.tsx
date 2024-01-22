@@ -12,7 +12,7 @@ const MyOrders: React.FC = () => {
   return (
     <div className="order-container container mt-4">
       <h2>ORDER HISTORY</h2>
-      <ul className="list-group">
+      <ul className="list-group list-group-flush">
         {orders.map(order => (
           <li key={order.id} className="list-group-item">
             <div className="d-flex justify-content-between align-items-center">
