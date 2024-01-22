@@ -73,7 +73,7 @@ a:hover { color: var(--primary-color); }
 /*
 * Flyout Navigation Bar
 */
-#navbar {
+/* #navbar {
   position: fixed;
   left: 0;
   top: 0;
@@ -81,9 +81,9 @@ a:hover { color: var(--primary-color); }
   bottom: 0;
   background-color: rgb(255,247,231);
   z-index: 4;
-}
+} */
 
-.dropdown-nav__closeNavBtn {
+/* .dropdown-nav__closeNavBtn {
   position: absolute;
   top: 20px;
   right: 16px;
@@ -93,7 +93,7 @@ a:hover { color: var(--primary-color); }
 .dropdown-nav__container {
   height: 100vh;
   padding: 0 1rem;
-}
+} */
 
 /*
 * Hero Section
@@ -169,14 +169,14 @@ a:hover { color: var(--primary-color); }
 }
 
  
-@keyframes bounce {
+/* @keyframes bounce {
   from {
     transform: translateY(0px);
   }
   to {
     transform: translateY(-10px);
   }
-}
+} */
 
 
 /*
@@ -199,12 +199,29 @@ a:hover { color: var(--primary-color); }
 /*
 * Footer
 */
-.footer {
+/* .footer {
   color: #FEF9EA!important;
-}
+} */
 
 
-.footer .border-highlight {
+/* .footer .border-highlight {
   border-top: 1px solid var(--primary-color-highlight);
   color: #FEF9EA!important;
+} */
+
+
+
+
+/* //Alltid 100vh - header och footer */
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+ 
+}
+
+.main-content {
+  flex-grow: 1;
+
 }

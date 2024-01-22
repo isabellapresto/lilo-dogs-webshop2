@@ -16,3 +16,51 @@ Content-Type: application/json
   "username": "testuser",
   "password": "testpassword"
 }
+###
+
+//funkar ej
+POST http://localhost:3001/api/orders/create-order
+Content-Type: application/json
+
+[
+  {
+    "productName": "Product 1",
+    "image": "url-to-image",
+    "price": 10,
+    "quantity": 2
+  },
+  {
+    "productName": "Product 2",
+    "image": "url-to-image",
+    "price": 15,
+    "quantity": 1
+  }
+
+]
+
+###
+//funkar
+POST http://localhost:3001/api/orders/create-checkout-session
+Content-Type: application/json
+
+{
+  "cartItems": [
+    {
+      "quantity": 2,
+      "product": {
+        "productName": "Product 1",
+        "image": "url-to-image",
+        "price": 10
+      }
+    },
+    {
+      "quantity": 1,
+      "product": {
+        "productName": "Product 2",
+        "image": "url-to-image",
+        "price": 15
+      }
+    }
+    // Lägg till fler objekt om det behövs
+  ]
+}

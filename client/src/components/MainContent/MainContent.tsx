@@ -7,7 +7,8 @@ import ProductList from '../ProductList/ProductList';
 import ProductDetails from '../ProductDetails/ProductDetails';
 import CategoryProducts from '../CategoryProducts/CategoryProducts';
 // import CheckOutBtn from '../Cart/CheckOutBtn';
-import CheckOutSuccess from '../CheckOutSuccess';
+import CheckOutSuccess from '../CheckOutSuccess/CheckOutSuccess';
+import MyOrders from '../MyOrders/MyOrders';
 
 const MainContent: React.FC = () => {
   return (
@@ -29,6 +30,7 @@ const MainContent: React.FC = () => {
         {/* Include CheckOutBtn directly without Elements wrapper */}
         {/* <Route path="/pay" element={<CheckOutBtn />} /> */}
         <Route path="/success" element={<CheckOutSuccess />} />
+        <Route path="/my-orders" element={<MyOrders />} />
       </Routes>
     </div>
   );

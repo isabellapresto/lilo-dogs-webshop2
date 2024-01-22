@@ -1,0 +1,12 @@
+.success-container {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+
+}
+
+.centered-text {
+ padding-top: 250px;
+ text-align: center;
+ font-size: 35px;
+}

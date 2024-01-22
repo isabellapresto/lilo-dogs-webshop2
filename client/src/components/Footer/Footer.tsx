@@ -3,7 +3,7 @@ import "./Footer.css"
 
 const Footer = () => {
   return (
-    <footer style={{ backgroundColor: '#e8e4d5', color: '#5b5540' }} className="py-4">
+    <footer style={{  backgroundColor: '#e8e4d5', color: '#5b5540' }} className="py-4">
       <div className="container">
         <div className="row">
 
