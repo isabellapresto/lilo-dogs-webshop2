@@ -11,10 +11,8 @@ require("dotenv").config();
 // Funktion skapa en Checkout-session med Stripe
 const createStripeCheckoutSession = async (req, res) => {
   try{
- 
-
-
   const session = await stripe.checkout.sessions.create({
+    
     payment_method_types: ['card'],
     line_items: req.body.cartItems.map(item => ({
       price_data: {
@@ -29,6 +27,9 @@ const createStripeCheckoutSession = async (req, res) => {
     })),
     mode: 'payment',
     success_url: 'http://localhost:5173/success', 
+    shipping_address_collection: {
+      allowed_countries: ['US', 'CA', 'GB', 'SE'], // Specify the allowed countries for shipping
+    },
 
    
   });

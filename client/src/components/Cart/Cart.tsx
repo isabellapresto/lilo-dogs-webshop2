@@ -1,4 +1,4 @@
-import { Offcanvas } from 'react-bootstrap';
+import {  Offcanvas } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import CartItems from './CartItems';
 import CheckOutBtn from './CheckOutBtn';
@@ -45,9 +45,12 @@ const Cart = ({ show, onHide }) => {
               </Link>
             </div>
             <div className="checkout-btn-container">
-              {/* Knapp för att gå till kassan */}
-              <CheckOutBtn />
-            </div>
+              <CheckOutBtn/>
+    {/* <Link to={`/delivery-details`} className="btn btn-dark " onClick={handleContinueShopping}>
+        Checkout
+    </Link> */}
+</div>
+
           </>
         )}
       </Offcanvas.Body>
