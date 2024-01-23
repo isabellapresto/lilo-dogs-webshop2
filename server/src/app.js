@@ -1,10 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const productRouter = require('./resources/product/product.router');
-const userRouter = require('./resources/user/user.router');  
-const orderRouter = require('./resources/order/order.router'); 
-require("dotenv").config();
+const userRouter = require('./resources/user/user.router');
+const orderRouter = require('./resources/order/order.router');
 const cookieSession = require('cookie-session');
+const { authenticateUser } = require('./resources/user/auth.middleware');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
 
@@ -20,16 +22,9 @@ app.use(
  })
 );
 
-
-
+app.use(authenticateUser);
 app.use('/api', productRouter);
 app.use('/api/users', userRouter);
-
 app.use('/api/orders', orderRouter);
-
-
-
-
-
 
 module.exports = { app };

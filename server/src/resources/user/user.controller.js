@@ -1,21 +1,17 @@
-const User = require('./user.model');
 const bcrypt = require('bcrypt');
+const User = require('./user.model');
 
-
-//Registrerar user och sparar i db
 async function registerUser(req, res) {
   try {
     const { username, password } = req.body;
 
-    // Check if the username already exists
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
       return res.status(400).json({ message: 'Username already exists. Please choose a different username.' });
     }
 
-    // If the username is not taken, proceed with registration
-    const hashedPassword = await bcrypt.hash(password, 3);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
 
@@ -26,7 +22,6 @@ async function registerUser(req, res) {
   }
 }
 
-
 async function loginUser(req, res) {
   try {
     const { username, password } = req.body;
@@ -36,16 +31,14 @@ async function loginUser(req, res) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // Sätt session
-    req.session.userId = user._id;
-
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // Skicka tillbaka användarinformation inklusive användarnamnet
+    req.session.userId = user._id;
+
     res.json({
       message: 'Login successful',
       user: {
@@ -53,26 +46,53 @@ async function loginUser(req, res) {
         username: user.username,
       },
     });
-    
   } catch (error) {
     console.error('Error logging in user:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
 
+const getCurrentUser = async (req, res) => {
+  try {
+    if (req.session && req.session.userId) {
+      const user = await User.findById(req.session.userId);
 
-
-async function logoutUser(req, res) {
-  // Destroy the user's session or token on the server side
-  req.session.destroy((err) => {
-    if (err) {
-      console.error('Error logging out user:', err);
-      res.status(500).json({ message: 'Internal Server Error' });
+      if (user) {
+        res.json({
+          id: user._id,
+          username: user.username,
+        });
+      } else {
+        res.status(404).json({ message: 'User not found' });
+      }
     } else {
-      res.json({ message: 'Logout successful' });
+      res.status(401).json({ message: 'Not authenticated' });
     }
-  });
-}
+  } catch (error) {
+    console.error('Error getting current user:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
-module.exports = { registerUser, loginUser, logoutUser };
+
+
+const logoutUser = async (req, res) => {
+  try {
+
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Error logging out user:', err);
+        res.status(500).json({ message: 'Internal Server Error' });
+      } else {
+        res.json({ message: 'Logout successful' });
+      }
+    });
+  } catch (error) {
+    console.error('Error logging out user:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+module.exports = { registerUser, loginUser, logoutUser, getCurrentUser };
+
 

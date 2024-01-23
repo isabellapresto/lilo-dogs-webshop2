@@ -18,27 +18,21 @@ export default function LoginModal({ show, onHide, onSwitchToRegister }) {
         },
         body: JSON.stringify({ username, password }),
       });
-
+  
       if (response.ok) {
-        setUsername('');
-        setPassword('');
-        setError('');
         const userData = await response.json();
-        console.log('Användarobjekt:', userData); // användarobjektet inget
-        login(userData);
+        console.log('Användarobjekt:', userData.user); // notera .user här
+        login(userData.user); // notera .user här
         onHide();
       } else {
-        setUsername('');
-        setPassword('');
         const errorData = await response.json();
         setError(errorData.message || 'Inloggningen misslyckades.');
       }
     } catch (error) {
-      setUsername('');
-      setPassword('');
       setError('Ett fel uppstod vid inloggning.');
     }
   };
+  
 
   const handleLogout = () => {
     // Logga ut användaren

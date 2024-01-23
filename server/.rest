@@ -4,7 +4,7 @@ Content-Type: application/json
 
 
 {
-  "username": "Lilo",
+  "username": "Lilo1",
   "password": "123"
 }
 
@@ -18,7 +18,7 @@ Content-Type: application/json
 }
 ###
 
-//funkar ej
+
 POST http://localhost:3001/api/orders/create-order
 Content-Type: application/json
 
@@ -61,6 +61,6 @@ Content-Type: application/json
         "price": 15
       }
     }
-    // Lägg till fler objekt om det behövs
+   
   ]
 }
