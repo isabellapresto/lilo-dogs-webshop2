@@ -52,30 +52,6 @@ async function loginUser(req, res) {
   }
 }
 
-const getCurrentUser = async (req, res) => {
-  try {
-    if (req.session && req.session.userId) {
-      const user = await User.findById(req.session.userId);
-
-      if (user) {
-        res.json({
-          id: user._id,
-          username: user.username,
-        });
-      } else {
-        res.status(404).json({ message: 'User not found' });
-      }
-    } else {
-      res.status(401).json({ message: 'Not authenticated' });
-    }
-  } catch (error) {
-    console.error('Error getting current user:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-};
-
-
-
 const logoutUser = async (req, res) => {
   try {
 
@@ -93,6 +69,6 @@ const logoutUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, logoutUser, getCurrentUser };
+module.exports = { registerUser, loginUser, logoutUser };
 
 

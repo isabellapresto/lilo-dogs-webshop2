@@ -1,5 +1,4 @@
-// client/usercontext.tsx
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 interface UserContextProps {
   user: User | null;
@@ -8,6 +7,7 @@ interface UserContextProps {
 }
 
 interface User {
+  isLoggedIn: User | null;
   id: string;
   username: string;
 }
@@ -17,25 +17,6 @@ const UserContext = createContext<UserContextProps | undefined>(undefined);
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/users/current', {
-          method: 'GET',
-          credentials: 'include', // Include credentials (cookies)
-        });
-
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
 
   const login = (userData: User) => {
     console.log('Användaren har loggat in:', userData);

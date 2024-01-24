@@ -9,7 +9,7 @@ const CheckOutBtn: React.FC = () => {
 
   return (
     <Button variant="dark" onClick={handlePayment}>
-      Pay
+      Checkout
     </Button>
   );
 };
