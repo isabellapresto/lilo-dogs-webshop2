@@ -54,12 +54,12 @@ async function loginUser(req, res) {
 
 const logoutUser = async (req, res) => {
   try {
-
     req.session.destroy((err) => {
       if (err) {
-        console.error('Error logging out user:', err);
+        console.error('Error destroying session:', err);
         res.status(500).json({ message: 'Internal Server Error' });
       } else {
+        res.clearCookie('session');
         res.json({ message: 'Logout successful' });
       }
     });
@@ -68,6 +68,8 @@ const logoutUser = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+
 
 module.exports = { registerUser, loginUser, logoutUser };
 
