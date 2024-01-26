@@ -28,7 +28,9 @@ const createStripeCheckoutSession = async (req, res) => {
     })),
     mode: 'payment',
     success_url: 'http://localhost:5173/success', 
-
+       shipping_address_collection: {
+        allowed_countries: ['SE', 'CA', 'GB', 'US'],
+      }
    
   });
   console.log('Created Stripe session:', session);

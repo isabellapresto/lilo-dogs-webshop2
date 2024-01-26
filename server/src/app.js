@@ -15,8 +15,9 @@ app.use(express.json());
 app.use(
  cookieSession({
    name: 'session',
-   keys: ['ea1e54fba531dff2e1f00bb18fafdf5a234e6c1d418748f9b08b946ed17fb7a2'], // Sätt ett säkert hemligt nyckel här
-   maxAge: 24 * 60 * 60 * 1000, // 24 timmars giltighetstid för sessionen (kan justeras efter behov)
+   secret: ['ea1e54fba531dff2e1f00bb18fafdf5a234e6c1d418748f9b08b946ed17fb7a2'],
+   veUninitialized: true, 
+   maxAge: 24 * 60 * 60 * 1000, 
  })
 );
 

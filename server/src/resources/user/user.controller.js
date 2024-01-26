@@ -36,16 +36,14 @@ async function loginUser(req, res) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // Sätt session
-    req.session.userId = user._id;
-
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // Skicka tillbaka användarinformation inklusive användarnamnet
+    req.session.userId = user._id;
+
     res.json({
       message: 'Login successful',
       user: {
@@ -53,26 +51,29 @@ async function loginUser(req, res) {
         username: user.username,
       },
     });
-    
   } catch (error) {
     console.error('Error logging in user:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
 
+const logoutUser = async (req, res) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Error destroying session:', err);
+        res.status(500).json({ message: 'Internal Server Error' });
+      } else {
+        res.clearCookie('session');
+        res.json({ message: 'Logout successful' });
+      }
+    });
+  } catch (error) {
+    console.error('Error logging out user:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 
-
-async function logoutUser(req, res) {
-  // Destroy the user's session or token on the server side
-  req.session.destroy((err) => {
-    if (err) {
-      console.error('Error logging out user:', err);
-      res.status(500).json({ message: 'Internal Server Error' });
-    } else {
-      res.json({ message: 'Logout successful' });
-    }
-  });
-}
 
 module.exports = { registerUser, loginUser, logoutUser };
 

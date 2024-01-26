@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
 
 interface UserContextProps {
-  user: User | null;          // Användarobjekt eller null om ingen användare är inloggad
-  login: (userData: User) => void;   
-  logout: () => void;         
+  user: User | null;
+  login: (userData: User) => void;
+  logout: () => void;
 }
 
-
 interface User {
+  isLoggedIn: User | null;
   id: string;
   username: string;
 }
@@ -15,18 +15,21 @@ interface User {
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // State för att hålla den inloggade användaren.
   const [user, setUser] = useState<User | null>(null);
 
-  // Funktion för att logga in 
+
   const login = (userData: User) => {
     console.log('Användaren har loggat in:', userData);
     setUser(userData);
+    // Spara användarinformation i en cookie vid inloggning
+    document.cookie = `user=${JSON.stringify(userData)}; path=/`;
   };
 
-  // Funktion för att logga ut 
   const logout = () => {
+    console.log('Användaren har loggat ut');
     setUser(null);
+    // Ta bort användarinformation från cookien vid utloggning
+    document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   };
 
   return (

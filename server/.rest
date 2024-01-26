@@ -64,3 +64,34 @@ Content-Type: application/json
     // Lägg till fler objekt om det behövs
   ]
 }
+###
+
+POST http://localhost:3001/api/orders/create-order
+Content-Type: application/json
+
+{
+  "cartItems": [
+    {
+      "quantity": 2,
+      "product": {
+        "productName": "Product 1",
+        "image": "url-to-image",
+        "price": 10
+      }
+    },
+    {
+      "quantity": 1,
+      "product": {
+        "productName": "Product 2",
+        "image": "url-to-image",
+        "price": 15
+      }
+    }
+   
+  ]
+}
+
+###
+GET http://localhost:3001/api/orders
+###
+GET http://localhost:3001/api/users
