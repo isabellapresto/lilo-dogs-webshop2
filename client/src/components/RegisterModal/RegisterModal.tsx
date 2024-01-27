@@ -52,7 +52,7 @@ export default function RegisterModal({ show, onHide, onSwitchToLogin }) {
             <Form.Group controlId="formUsername" style={{ marginBottom: '10px' }}>
               <Form.Control
                 type="text"
-                placeholder="Enter your username"
+                placeholder="Email"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
@@ -60,7 +60,7 @@ export default function RegisterModal({ show, onHide, onSwitchToLogin }) {
             <Form.Group controlId="formPassword" style={{ marginBottom: '10px' }}>
               <Form.Control
                 type="password"
-                placeholder="Enter your password"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
