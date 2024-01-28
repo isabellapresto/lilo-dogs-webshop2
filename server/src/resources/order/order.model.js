@@ -8,8 +8,11 @@ const orderSchema = new mongoose.Schema({
       quantity: { type: Number, required: true },
     }
   ],
-  sessionId: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+  //skicka med inloggad user
+  // sessionId: { type: String, required: true },
+  // id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  // username: { type: String, required: true },
+
 });
 
 const Order = mongoose.model('Order', orderSchema);

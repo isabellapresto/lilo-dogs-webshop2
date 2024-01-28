@@ -9,6 +9,7 @@ import CategoryProducts from '../CategoryProducts/CategoryProducts';
 // import CheckOutBtn from '../Cart/CheckOutBtn';
 import CheckOutSuccess from '../CheckOutSuccess/CheckOutSuccess';
 import MyOrders from '../MyOrders/MyOrders';
+import DeliveryDetails from '../DeliveryDetails/DeliveryDetails';
 
 const MainContent: React.FC = () => {
   return (
@@ -31,6 +32,7 @@ const MainContent: React.FC = () => {
         {/* <Route path="/pay" element={<CheckOutBtn />} /> */}
         <Route path="/success" element={<CheckOutSuccess />} />
         <Route path="/my-orders" element={<MyOrders />} />
+        <Route path="/delivery-details" element={<DeliveryDetails />} />
       </Routes>
     </div>
   );

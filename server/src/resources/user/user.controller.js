@@ -1,21 +1,17 @@
-const User = require('./user.model');
 const bcrypt = require('bcrypt');
+const User = require('./user.model');
 
-
-//Registrerar user och sparar i db
 async function registerUser(req, res) {
   try {
     const { username, password } = req.body;
 
-    // Check if the username already exists
     const existingUser = await User.findOne({ username });
 
     if (existingUser) {
       return res.status(400).json({ message: 'Username already exists. Please choose a different username.' });
     }
 
-    // If the username is not taken, proceed with registration
-    const hashedPassword = await bcrypt.hash(password, 3);
+    const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashedPassword });
     await newUser.save();
 
@@ -25,7 +21,6 @@ async function registerUser(req, res) {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 }
-
 
 async function loginUser(req, res) {
   try {
@@ -75,5 +70,7 @@ const logoutUser = async (req, res) => {
 };
 
 
+
 module.exports = { registerUser, loginUser, logoutUser };
+
 

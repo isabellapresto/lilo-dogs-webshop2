@@ -43,15 +43,15 @@ export default function LoginModal({ show, onHide, onSwitchToRegister }) {
   return (
     <Modal show={show} onHide={() => { onHide(); setUsername(''); setPassword(''); setError(''); }}>
       <Modal.Header closeButton>
-        <Modal.Title>{user ? 'Du är inloggad' : 'Login'}</Modal.Title>
+        <Modal.Title>{user ? 'You are logged in' : 'Login'}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {user ? (
           // Visa inloggningsstatus
           <>
-            <p>Du är inloggad som {user.username}</p>
+            <p>You are logged in with e-mail: { user.username}</p>
             <Button variant="dark" onClick={handleLogout}>
-              Logga ut
+              Log out
             </Button>
           </>
         ) : (
@@ -60,7 +60,7 @@ export default function LoginModal({ show, onHide, onSwitchToRegister }) {
             <Form.Group controlId="formUsername" style={{ marginBottom: '10px' }}>
               <Form.Control
                 type="text"
-                placeholder="Enter your username"
+                placeholder="Email"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
@@ -68,7 +68,7 @@ export default function LoginModal({ show, onHide, onSwitchToRegister }) {
             <Form.Group controlId="formPassword" style={{ marginBottom: '10px' }}>
               <Form.Control
                 type="password"
-                placeholder="Enter your password"
+                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

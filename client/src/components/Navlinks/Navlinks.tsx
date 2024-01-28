@@ -37,7 +37,8 @@ export default function Navlinks() {
     const isProductPage = currentPath.includes('/products');
 const isMyOrdersPage = currentPath.includes('/my-orders');
 const isSuccessPage = currentPath.includes('/success');
-const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage || isSuccessPage;
+const isDetailsPage = currentPath.includes('/delivery-details');
+const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isSuccessPage || isDetailsPage;
 
 
   const handleMobileMenuToggle = () => {
