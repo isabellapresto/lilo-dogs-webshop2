@@ -5,6 +5,7 @@ import CheckOutBtn from './CheckOutBtn';
 import { useCart } from '../../../Context/CartContext';
 import "../Cart/Cart.css";
 import { useEffect } from 'react';
+// import { CartItem } from '../../Interfaces/CartItemsInterface';
 
 // Visa varukorgen i Offcanvas
 const Cart = ({ show, onHide }) => {

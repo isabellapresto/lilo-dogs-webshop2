@@ -31,6 +31,8 @@ interface CartContextProps {
 }
 
 export type CartItem = {
+  _id: string,
+  price: number;
   quantity: number;
   product: Product;
 };
