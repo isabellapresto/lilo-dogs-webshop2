@@ -8,10 +8,28 @@ const stripe = initStripe()
 require("dotenv").config();
 
 
-const createOrder = async (cartItems, sessionId) => {
+const createOrder = async (cart) => {
   try {
     // Create a new order 
-    const order = new Order({ cart: cartItems, sessionId });
+    // const newCart = []  
+    // for(let i = 0; i < cart.lenght; i++ ) {
+    //   newCart.push({productName:cart[i].product.productName, image: cart[i].product.image, price: cart[i].product.price, quantity: cart[i].quantity })
+    // }
+
+    const newCart = cart.map((item) => ({
+
+      productName: item.product.productName,
+    
+      image: item.product.image,
+    
+      price: item.product.price,
+    
+      quantity: item.quantity,
+    
+    }));
+
+    const order = new Order( {cart:newCart} );
+    console.log (newCart)
 
     // Save the order to the database
     await order.save();
@@ -25,34 +43,43 @@ const createOrder = async (cartItems, sessionId) => {
   }
 };
 
-const verifySession = async (sessionId) => {
-  try {
-    // Se till att sessionId är en sträng
-    if (typeof sessionId !== 'string') {
-      throw new Error('Ogiltigt sessionId. Det måste vara en sträng.');
-    }
+
+const verifySession = async (req, res) => {
+  // try {
+    const sessionId = req.body.sessionId;
+    const cart = JSON.parse(req.body.cart);
 
     const updatedSession = await stripe.checkout.sessions.retrieve(sessionId);
+console.log(updatedSession);
 
-    if (updatedSession.payment_status === 'paid' && updatedSession.payment_intent.status === 'succeeded') {
-      // Betalningen är godkänd, köra createOrder
-      await createOrder(updatedSession.cart, sessionId);
-      console.log('Betalningen lyckades och order skapades.');
-    } else {
-      console.log('Betalningen lyckades inte.');
-    }
-  } catch (error) {
-    console.error('Ett fel inträffade i verifySession:', error);
-  }
+    await createOrder(cart);
+    // Se till att sessionId är en sträng
+    // if (typeof sessionId !== 'string') {
+    //   throw new Error('Ogiltigt sessionId. Det måste vara en sträng.');
+    // }
+  
+    
+
+  //   if (updatedSession.payment_status === 'succeeded') {
+  //     // && updatedSession.payment_intent.status === 'succeeded'
+  //     // Betalningen är godkänd, köra createOrder
+  
+  //     console.log('Betalningen lyckades och order skapades.');
+  //   } else {
+  //     console.log('Betalningen lyckades inte.');
+  //   }
+  // } catch (error) {
+  //   console.error('Ett fel inträffade i verifySession:', error);
+  // }
+
+res.status(200);
+
 };
 
 
 // Funktion skapa en Checkout-session med Stripe
 const createStripeCheckoutSession = async (req, res) => {
   try{
- 
-
-
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
     line_items: req.body.cartItems.map(item => ({
@@ -75,9 +102,8 @@ const createStripeCheckoutSession = async (req, res) => {
   });
   console.log('Created Stripe session:', session);
 
-res.json(session);
 
-await verifySession(String(session.id));
+  res.json(session);
 
 } catch (error) {
 console.error('An error occurred in createStripeCheckoutSession:', error);

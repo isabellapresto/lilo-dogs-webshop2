@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, Dispatch, SetStateAction } from 'react';
 import { Product } from '../src/Interfaces/ProductInterfaces';
+import { CartItem } from '../src/Interfaces/CartItemsInterface';
 
 // Hook för att använda localStorage
 const useLocalStorage = (key: string, initialValue: never[]) => {
@@ -30,12 +31,7 @@ interface CartContextProps {
   setCartItems: Dispatch<SetStateAction<CartItem[]>>;
 }
 
-export type CartItem = {
-  _id: string,
-  price: number;
-  quantity: number;
-  product: Product;
-};
+
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   //useLocalStorage-hook för att spara varukorgen
@@ -43,7 +39,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Funktion för att lägga till en produkt i varukorgen
   const addToCart = (product: Product, quantity: number) => {
-    const cartItem: CartItem= {   quantity: quantity,   product: product };
+    const cartItem: CartItem= {
+      quantity: quantity, product: product,
+      _id: '',
+      price: 0
+    };
     const updatedCart = [...cartItems, { ...cartItem, quantity }];
     setCartItems(updatedCart);
     console.log("updated cart!!!!", updatedCart)
@@ -81,16 +81,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   //Handle payment- redirect to Stripe
   async function handlePayment() {
-    // const cartToStripe = cartItems.map((item) => ({
-    
-    //   quantity: item.quantity,
-  
-    // }));
-
-    // console.log('Cart items to Stripe:', cartToStripe);
- 
-
- 
     const response = await fetch("http://localhost:3001/api/orders/create-checkout-session", {
       method: "POST",
       headers: {
@@ -99,14 +89,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       body: JSON.stringify({ cartItems }),
     });
  
-    // if (!response.ok) {
-    //   return;
-    // }
- 
     //Save session id to localStorage
-    const { url, sessionId } = await response.json();
-    localStorage.setItem("session-id", sessionId);
-    window.location = url;
+    const { url, id } = await response.json();
+    localStorage.setItem("session-id", id);
+
+
+    setTimeout(() => {
+      window.location =url
+      }, 2000);
+    
   }
 
 

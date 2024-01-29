@@ -1,19 +1,14 @@
 const mongoose = require('mongoose');
 
+const cartItemSchema = new mongoose.Schema({
+  productName: { type: String, required: true },
+  image: { type: String, required: true },
+  price: { type: Number, required: true },
+  quantity: { type: Number, required: true },
+});
+ 
 const orderSchema = new mongoose.Schema({
-  cart: [
-    {
-      productName: String,
-      image: String,
-      price: Number,
-      quantity: Number,
-    },
-  ],
-  //skicka med inloggad user
-  // sessionId: { type: String, required: true },
-  // id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  // username: { type: String, required: true },
-
+  cart: [cartItemSchema],
 });
 
 const Order = mongoose.model('Order', orderSchema);
