@@ -5,6 +5,7 @@ import CheckOutBtn from './CheckOutBtn';
 import { useCart } from '../../../Context/CartContext';
 import "../Cart/Cart.css";
 import { useEffect } from 'react';
+// import { CartItem } from '../../Interfaces/CartItemInterface';
 
 // Visa varukorgen i Offcanvas
 const Cart = ({ show, onHide }) => {
@@ -15,7 +16,7 @@ const Cart = ({ show, onHide }) => {
 
   // Totalpris
   const calculateTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   const handleContinueShopping = () => {
@@ -37,7 +38,7 @@ const Cart = ({ show, onHide }) => {
           // Visa produkter, totalpris, länk för att fortsätta shoppa och knapp för att checka ut
           <>
             <CartItems  cartItems = {cartItems}/>
-            <div>Total Price: €{calculateTotalPrice()}</div>
+            {/* <div>Total Price: €{calculateTotalPrice()}</div> */}
             <div style={{ marginBottom: '10px' }}>
               {/* Länk för att fortsätta shoppa */}
               <Link to={`/products`} className="continue-shopping-link" onClick={handleContinueShopping}>

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, Dispatch, SetStateAction } from 'react';
 import { Product } from '../src/Interfaces/ProductInterfaces';
+import { CartItem } from '../src/Interfaces/CartItemInterface';
 
 // Hook för att använda localStorage
 const useLocalStorage = (key: string, initialValue: never[]) => {
@@ -30,22 +31,27 @@ interface CartContextProps {
   setCartItems: Dispatch<SetStateAction<CartItem[]>>;
 }
 
-export type CartItem = {
-  quantity: number;
-  product: Product;
-};
+// export type CartItem = {
+//   quantity: number;
+//   product: Product;
+// };
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   //useLocalStorage-hook för att spara varukorgen
   const [cartItems, setCartItems] = useLocalStorage('shopping-cart', []);
 
   // Funktion för att lägga till en produkt i varukorgen
-  const addToCart = (product: Product, quantity: number) => {
-    const cartItem: CartItem= {   quantity: quantity,   product: product };
-    const updatedCart = [...cartItems, { ...cartItem, quantity }];
-    setCartItems(updatedCart);
-    console.log("updated cart!!!!", updatedCart)
-  };
+// Funktion för att lägga till en produkt i varukorgen
+const addToCart = (product: Product, quantity: number) => {
+  const cartItem: CartItem = {
+    ...product, quantity,
+    userEmail: ''
+  }; // Uppdaterad här för att inkludera hela produktobjektet
+  const updatedCart = [...cartItems, cartItem];
+  setCartItems(updatedCart);
+  console.log("updated cart!!!!", updatedCart);
+};
+
 
   // Funktion för att uppdatera kvantiteten av en produkt i varukorgen
   const updateQuantity = (productId: string, quantity: number) => {
@@ -78,35 +84,28 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   //Handle payment- redirect to Stripe
-  async function handlePayment() {
-    // const cartToStripe = cartItems.map((item) => ({
-    
-    //   quantity: item.quantity,
-  
-    // }));
-
-    // console.log('Cart items to Stripe:', cartToStripe);
- 
-
- 
+//Handle payment- redirect to Stripe
+async function handlePayment() {
+  try {
     const response = await fetch("http://localhost:3001/api/orders/create-checkout-session", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ cartItems }),
+      body: JSON.stringify({ cartItems: cartItems.map((item: CartItem) => ({ quantity: item.quantity, product: item })) }),
     });
- 
-    // if (!response.ok) {
-    //   return;
-    // }
- 
-    //Save session id to localStorage
-    const { url, sessionId } = await response.json();
-    localStorage.setItem("session-id", sessionId);
-    window.location = url;
-  }
 
+    if (response.ok) {
+      const { url, sessionId } = await response.json();
+      localStorage.setItem("session-id", sessionId);
+      window.location = url;
+    } else {
+      console.error('Failed to create checkout session.');
+    }
+  } catch (error) {
+    console.error('An error occurred in handlePayment:', error);
+  }
+}
 
 
 

@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
   cart: [
     {
+      productId: Number,
       productName: String,
-      image: String,
       price: Number,
       quantity: Number,
+      userEmail: String,
+      image: String,
     },
   ],
   //skicka med inloggad user

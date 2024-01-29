@@ -8,22 +8,41 @@ const stripe = initStripe()
 require("dotenv").config();
 
 
-const createOrder = async (cartItems, sessionId) => {
+const createOrder = async (sessionId, cartItems) => {
   try {
-    // Create a new order 
+    // const cartItems = [
+    //   {
+    //     productId: 1,
+    //     productName: 'Product 1',
+    //     price: 10,
+    //     quantity: 1,
+    //     userEmail: 'isabella.presto@gmail.com',
+    //   },
+    //   {
+    //     productId: 2,
+    //     productName: 'Product 2',
+    //     price: 10,
+    //     quantity: 3,
+    //     userEmail: 'isabella.presto@gmail.com',
+    //   },
+
+    // ];
+
+    console.log('Received cartItems:', cartItems);
+
+    // Create a new order
     const order = new Order({ cart: cartItems, sessionId });
 
     // Save the order to the database
     await order.save();
 
     console.log('Order created successfully');
-
-
   } catch (error) {
     console.error('Error creating order:', error);
-    throw error; 
+    throw error;
   }
 };
+
 
 const verifySession = async (sessionId) => {
   try {
@@ -77,7 +96,8 @@ const createStripeCheckoutSession = async (req, res) => {
 
 res.json(session);
 
-await verifySession(String(session.id));
+// await verifySession(String(session.id));
+await createOrder(req.body.cartItems, String(session.id));
 
 } catch (error) {
 console.error('An error occurred in createStripeCheckoutSession:', error);

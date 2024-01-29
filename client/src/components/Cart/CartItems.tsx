@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
-import { useCart, CartItem } from '../../../Context/CartContext';
+import { useCart } from '../../../Context/CartContext';
 import { ListGroup, Image } from 'react-bootstrap';
+import { CartItem } from '../../../src/Interfaces/CartItemInterface';
 
-interface CartItemsProps  {
-  cartItems: CartItem []
-}
-
-
-const CartItems = ({ cartItems } : CartItemsProps) => {
+const CartItems = ({ cartItems }: { cartItems: CartItem[] }) => {
   const { increaseQuantity, decreaseQuantity, removeProduct } = useCart();
-  useEffect(() => { console.log(cartItems); }, [cartItems]);
+  
+  useEffect(() => {
+    console.log(cartItems);
+  }, [cartItems]);
 
   const handleRemove = (productId: string) => {
-    console.log("Removing product with ID:", productId); 
+    console.log("Removing product with ID:", productId);
     removeProduct(productId);
   };
 
@@ -22,14 +21,14 @@ const CartItems = ({ cartItems } : CartItemsProps) => {
         {cartItems.map((item, index) => (
           <ListGroup.Item key={index}>
             <div className="d-flex align-items-center">
-              <Image src={item.product.image} alt={item.product.productName} thumbnail className="mr-3" style={{ maxWidth: '100px', maxHeight: '100px' }} />
+              <Image src={item.image} alt={item.productName} thumbnail className="mr-3" style={{ maxWidth: '100px', maxHeight: '100px' }} />
               <div>
-                <h5>{item.product.productName}</h5>
-                <button onClick={() => decreaseQuantity(item.product._id)}>-</button>
+                <h5>{item.productName}</h5>
+                <button onClick={() => decreaseQuantity(item.productId.toString())}>-</button>
                 <button className="quantity">{item.quantity}</button>
-                <button onClick={() => increaseQuantity(item.product._id)}>+</button>
-                <button onClick={() => handleRemove(item.product._id)}>Remove</button> 
-                <h6>€ {item.product.price * item.quantity}</h6>
+                <button onClick={() => increaseQuantity(item.productId.toString())}>+</button>
+                <button onClick={() => handleRemove(item.productId.toString())}>Remove</button>
+                <h6>€ {item.price * item.quantity}</h6>
               </div>
             </div>
           </ListGroup.Item>
