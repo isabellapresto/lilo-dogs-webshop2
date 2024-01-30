@@ -5,6 +5,7 @@ import CheckOutBtn from './CheckOutBtn';
 import { useCart } from '../../../Context/CartContext';
 import "../Cart/Cart.css";
 import { useEffect } from 'react';
+// import { CartItem } from '../../Interfaces/CartItemsInterface';
 
 // Visa varukorgen i Offcanvas
 const Cart = ({ show, onHide }) => {
@@ -15,7 +16,7 @@ const Cart = ({ show, onHide }) => {
 
   // Totalpris
   const calculateTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
+    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   const handleContinueShopping = () => {

@@ -1,9 +1,21 @@
-
-
-import React from 'react';
 import './CheckOutSuccess.css';
+import { useEffect } from 'react';
+
 
 export default function CheckOutSuccess() {
+  useEffect(() => { 
+
+// setTimeout(() => {
+    fetch("http://localhost:3001/api/orders/verify-session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({sessionId:localStorage.getItem("session-id"),cart: localStorage.getItem("shopping-cart") }),
+    });
+  // }, 30000);
+
+   }, []);
   return (
     <div>
      

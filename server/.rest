@@ -48,6 +48,8 @@ Content-Type: application/json
 ]
 
 ###
+
+
 //funkar
 POST http://localhost:3001/api/orders/create-checkout-session
 Content-Type: application/json

@@ -10,5 +10,4 @@ export interface Product {
  image: string;
  rating: string;
  quantity: number;
-
 }
