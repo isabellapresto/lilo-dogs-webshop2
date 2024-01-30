@@ -1,23 +1,57 @@
-//TILL MAIN 
 const Order = require('../order/order.model');
 
-
 const{ initStripe } = require("../../stripe")
+
 
 const stripe = initStripe()
 
 require("dotenv").config();
 
 
-const createOrder = async (cart) => {
-  try {
-    // Create a new order 
-    // const newCart = []  
-    // for(let i = 0; i < cart.lenght; i++ ) {
-    //   newCart.push({productName:cart[i].product.productName, image: cart[i].product.image, price: cart[i].product.price, quantity: cart[i].quantity })
-    // }
+// const createOrder = async (cart) => {
+//   try {
+ 
+//     const newCart = cart.map((item) => ({
 
-    const newCart = cart.map((item) => ({
+//       customer: session.customer_details.name,
+
+//       productName: item.product.productName,
+    
+//       image: item.product.image,
+    
+//       price: item.product.price,
+    
+//       quantity: item.quantity,
+    
+//     }));
+
+//     const order = new Order( {cart:newCart} );
+//     console.log (newCart)
+
+//     // Save the order to the database
+//     await order.save();
+
+//     console.log('Order created successfully');
+
+
+//   } catch (error) {
+//     console.error('Error creating order:', error);
+//     throw error; 
+//   }
+// };
+
+
+const verifySession = async (req, res) => {
+
+    const sessionId = req.body.sessionId;
+    const cart = JSON.parse(req.body.cart);
+
+    const updatedSession = await stripe.checkout.sessions.retrieve(sessionId);
+    console.log(updatedSession);
+
+       const newCart = cart.map((item) => ({
+
+      customer: updatedSession.customer_details.email,
 
       productName: item.product.productName,
     
@@ -38,41 +72,10 @@ const createOrder = async (cart) => {
     console.log('Order created successfully');
 
 
-  } catch (error) {
-    console.error('Error creating order:', error);
-    throw error; 
-  }
-};
 
 
-const verifySession = async (req, res) => {
-  // try {
-    const sessionId = req.body.sessionId;
-    const cart = JSON.parse(req.body.cart);
 
-    const updatedSession = await stripe.checkout.sessions.retrieve(sessionId);
-console.log(updatedSession);
-
-    await createOrder(cart);
-    // Se till att sessionId är en sträng
-    // if (typeof sessionId !== 'string') {
-    //   throw new Error('Ogiltigt sessionId. Det måste vara en sträng.');
-    // }
   
-    
-
-  //   if (updatedSession.payment_status === 'succeeded') {
-  //     // && updatedSession.payment_intent.status === 'succeeded'
-  //     // Betalningen är godkänd, köra createOrder
-  
-  //     console.log('Betalningen lyckades och order skapades.');
-  //   } else {
-  //     console.log('Betalningen lyckades inte.');
-  //   }
-  // } catch (error) {
-  //   console.error('Ett fel inträffade i verifySession:', error);
-  // }
-
 res.status(200);
 
 };
@@ -83,6 +86,7 @@ const createStripeCheckoutSession = async (req, res) => {
   try{
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
+    customer_email: req.body.email,
     line_items: req.body.cartItems.map(item => ({
       price_data: {
         currency: 'eur',
@@ -117,4 +121,4 @@ res.status(500).json({ message: 'Internal Server Error' });
 
 
 
-module.exports = { createOrder, verifySession, createStripeCheckoutSession };
+module.exports = {  verifySession, createStripeCheckoutSession };
