@@ -105,6 +105,31 @@ async function getAllOrders(req, res) {
   }
 }
 
+//orders for user
+async function getAllOrdersForUser(req, res) {
+  console.log('req.params:', req.params); //stämmer 
+  const loggedInUsername = req.params.username;
+
+  try {
+    console.log('Försöker hämta ordrar för användare:', loggedInUsername);
+
+    const orders = await Order.find({ 'cartItemSchema.customer': loggedInUsername }).exec();
 
 
-module.exports = {  verifySession, createStripeCheckoutSession, getAllOrders };
+
+
+    console.log('Alla ordrar för användare', loggedInUsername, ':', orders);
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Fel vid hämtning av ordrar för användare', loggedInUsername, ':', error);
+    res.status(500).json({ error: 'Ett fel uppstod vid hämtning av ordrar.' });
+  }
+}
+
+
+
+
+
+
+module.exports = {  verifySession, createStripeCheckoutSession, getAllOrders, getAllOrdersForUser };
