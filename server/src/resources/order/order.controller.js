@@ -8,37 +8,6 @@ const stripe = initStripe()
 require("dotenv").config();
 
 
-// const createOrder = async (cart) => {
-//   try {
- 
-//     const newCart = cart.map((item) => ({
-
-//       customer: session.customer_details.name,
-
-//       productName: item.product.productName,
-    
-//       image: item.product.image,
-    
-//       price: item.product.price,
-    
-//       quantity: item.quantity,
-    
-//     }));
-
-//     const order = new Order( {cart:newCart} );
-//     console.log (newCart)
-
-//     // Save the order to the database
-//     await order.save();
-
-//     console.log('Order created successfully');
-
-
-//   } catch (error) {
-//     console.error('Error creating order:', error);
-//     throw error; 
-//   }
-// };
 
 
 const verifySession = async (req, res) => {
@@ -118,7 +87,24 @@ res.status(500).json({ message: 'Internal Server Error' });
 
 };
 
+//Get all orders
+//Get all orders
+// Get all orders
+async function getAllOrders(req, res) {
+  try {
+    const orders = await Order.find().exec();
+    console.log('Alla ordrar:', orders);
+
+    // Skicka tillbaka svar till klienten
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Fel vid hämtning av ordrar:', error);
+    
+    // Skicka felmeddelande till klienten
+    res.status(500).json({ error: 'Ett fel uppstod vid hämtning av ordrar.' });
+  }
+}
 
 
 
-module.exports = {  verifySession, createStripeCheckoutSession };
+module.exports = {  verifySession, createStripeCheckoutSession, getAllOrders };
