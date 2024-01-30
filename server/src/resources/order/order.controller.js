@@ -1,23 +1,26 @@
-//TILL MAIN 
 const Order = require('../order/order.model');
 
-
 const{ initStripe } = require("../../stripe")
+
 
 const stripe = initStripe()
 
 require("dotenv").config();
 
 
-const createOrder = async (cart) => {
-  try {
-    // Create a new order 
-    // const newCart = []  
-    // for(let i = 0; i < cart.lenght; i++ ) {
-    //   newCart.push({productName:cart[i].product.productName, image: cart[i].product.image, price: cart[i].product.price, quantity: cart[i].quantity })
-    // }
 
-    const newCart = cart.map((item) => ({
+
+const verifySession = async (req, res) => {
+
+    const sessionId = req.body.sessionId;
+    const cart = JSON.parse(req.body.cart);
+
+    const updatedSession = await stripe.checkout.sessions.retrieve(sessionId);
+    console.log(updatedSession);
+
+       const newCart = cart.map((item) => ({
+
+      customer: updatedSession.customer_details.email,
 
       productName: item.product.productName,
     
@@ -38,41 +41,10 @@ const createOrder = async (cart) => {
     console.log('Order created successfully');
 
 
-  } catch (error) {
-    console.error('Error creating order:', error);
-    throw error; 
-  }
-};
 
 
-const verifySession = async (req, res) => {
-  // try {
-    const sessionId = req.body.sessionId;
-    const cart = JSON.parse(req.body.cart);
 
-    const updatedSession = await stripe.checkout.sessions.retrieve(sessionId);
-console.log(updatedSession);
-
-    await createOrder(cart);
-    // Se till att sessionId är en sträng
-    // if (typeof sessionId !== 'string') {
-    //   throw new Error('Ogiltigt sessionId. Det måste vara en sträng.');
-    // }
   
-    
-
-  //   if (updatedSession.payment_status === 'succeeded') {
-  //     // && updatedSession.payment_intent.status === 'succeeded'
-  //     // Betalningen är godkänd, köra createOrder
-  
-  //     console.log('Betalningen lyckades och order skapades.');
-  //   } else {
-  //     console.log('Betalningen lyckades inte.');
-  //   }
-  // } catch (error) {
-  //   console.error('Ett fel inträffade i verifySession:', error);
-  // }
-
 res.status(200);
 
 };
@@ -83,6 +55,7 @@ const createStripeCheckoutSession = async (req, res) => {
   try{
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
+    customer_email: req.body.email,
     line_items: req.body.cartItems.map(item => ({
       price_data: {
         currency: 'eur',
@@ -114,7 +87,49 @@ res.status(500).json({ message: 'Internal Server Error' });
 
 };
 
+//Get all orders
+//Get all orders
+// Get all orders
+async function getAllOrders(req, res) {
+  try {
+    const orders = await Order.find().exec();
+    console.log('Alla ordrar:', orders);
+
+    // Skicka tillbaka svar till klienten
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Fel vid hämtning av ordrar:', error);
+    
+    // Skicka felmeddelande till klienten
+    res.status(500).json({ error: 'Ett fel uppstod vid hämtning av ordrar.' });
+  }
+}
+
+//orders for user
+async function getAllOrdersForUser(req, res) {
+  console.log('req.params:', req.params); //stämmer 
+  const loggedInUsername = req.params.username;
+
+  try {
+    console.log('Försöker hämta ordrar för användare:', loggedInUsername);
+
+    const orders = await Order.find({ 'cartItemSchema.customer': loggedInUsername }).exec();
 
 
 
-module.exports = { createOrder, verifySession, createStripeCheckoutSession };
+
+    console.log('Alla ordrar för användare', loggedInUsername, ':', orders);
+
+    res.status(200).json(orders);
+  } catch (error) {
+    console.error('Fel vid hämtning av ordrar för användare', loggedInUsername, ':', error);
+    res.status(500).json({ error: 'Ett fel uppstod vid hämtning av ordrar.' });
+  }
+}
+
+
+
+
+
+
+module.exports = {  verifySession, createStripeCheckoutSession, getAllOrders, getAllOrdersForUser };

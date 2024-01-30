@@ -75,3 +75,8 @@ Content-Type: application/json
    
   ]
 }
+###
+GET  http://localhost:3001/api/orders/all-orders
+###
+GET http://localhost:3001/api/orders/all-orders/:isabella.presto@gmail.com
+###

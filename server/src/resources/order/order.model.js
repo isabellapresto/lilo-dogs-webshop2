@@ -5,10 +5,12 @@ const cartItemSchema = new mongoose.Schema({
   image: { type: String, required: true },
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
+  customer: { type: String, required: true },
 });
  
 const orderSchema = new mongoose.Schema({
   cart: [cartItemSchema],
+
 });
 
 const Order = mongoose.model('Order', orderSchema);
