@@ -101,10 +101,26 @@ export default function Navlinks() {
         <Nav className="d-lg-none ms-auto me-3">
           <div className="d-flex">
             <Nav.Link onClick={handleLoginModalToggle} className="me-3">
-              <FaUser />
+              <FaUser  />
             </Nav.Link>
             <Nav.Link onClick={handleCartDrawerToggle}>
-              <FaShoppingBag /> <span className="badge bg-secondary">{cartItemCount}</span>
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+      <FaShoppingBag style={{ fontSize: '18px' }} />
+      {cartItemCount > 0 && (
+        <span
+          className="badge bg-secondary"
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            fontSize: '10px',
+            transform: 'translate(50%, -50%)', // Centrerar vertikalt och horisontellt
+          }}
+        >
+          {cartItemCount}
+        </span>
+      )}
+    </div>
             </Nav.Link>
           </div>
         </Nav>
@@ -120,15 +136,31 @@ export default function Navlinks() {
         <Nav className="d-none d-lg-flex align-items-center">
           {isLoggedIn ? (
             <Nav.Link onClick={handleLogout} className="me-3">
-              <FaUser />
+              <FaUser  />
             </Nav.Link>
           ) : (
             <Nav.Link onClick={handleLoginModalToggle} className="me-3">
-              <FaUser />
+              <FaUser style={{ fontSize: '18px' }}  />
             </Nav.Link>
           )}
           <Nav.Link onClick={handleCartDrawerToggle}>
-            <FaShoppingBag /> <span className="badge bg-secondary">{cartItemCount}</span>
+          <div style={{ position: 'relative', display: 'inline-block' }}>
+      <FaShoppingBag style={{ fontSize: '18px' }} />
+      {cartItemCount > 0 && (
+        <p
+          className="badge bg-secondary"
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            fontSize: '10px',
+            transform: 'translate(50%, -50%)', // Centrerar vertikalt och horisontellt
+          }}
+        >
+          {cartItemCount}
+        </p>
+      )}
+    </div>
           </Nav.Link>
         </Nav>
 
