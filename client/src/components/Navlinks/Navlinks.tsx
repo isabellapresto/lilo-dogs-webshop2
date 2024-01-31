@@ -6,7 +6,8 @@ import "./NavLinks.css";
 import Cart from '../Cart/Cart';
 import LoginModal from '../LoginModal/LoginModal';
 import RegisterModal from '../RegisterModal/RegisterModal';
-import { useUser } from "../../../Context/UserContext"
+import { useUser } from "../../../Context/UserContext";
+import { useCart } from "../../../Context/CartContext"; // Importera useCart från CartContext
 
 export default function Navlinks() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -15,7 +16,8 @@ export default function Navlinks() {
   const [scrolling, setScrolling] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
-  const { user } = useUser(); // Use the useUser hook to obtain user information
+  const { user } = useUser();
+  const { cartItemCount } = useCart(); // Använd useCart för att få cartItemCount
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,16 +32,12 @@ export default function Navlinks() {
     };
   }, []);
 
-    // Hämta den aktuella sökvägen från fönstret
-    const currentPath = window.location.pathname;
-
-    // bakrundsfärg på header 
-    const isProductPage = currentPath.includes('/products');
-const isMyOrdersPage = currentPath.includes('/my-orders');
-const isSuccessPage = currentPath.includes('/success');
-const isDetailsPage = currentPath.includes('/delivery-details');
-const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isSuccessPage || isDetailsPage;
-
+  const currentPath = window.location.pathname;
+  const isProductPage = currentPath.includes('/products');
+  const isMyOrdersPage = currentPath.includes('/my-orders');
+  const isSuccessPage = currentPath.includes('/success');
+  const isDetailsPage = currentPath.includes('/delivery-details');
+  const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isSuccessPage || isDetailsPage;
 
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -68,21 +66,15 @@ const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isS
   };
 
   const handleLogin = () => {
-    // Logic for handling successful login
-    // Set isLoggedIn to true and close the login modal
     setIsLoggedIn(true);
     setLoginModalOpen(false);
   };
 
   const handleLogout = () => {
-    // Logic for handling logout
-    // Set isLoggedIn to false
     setIsLoggedIn(false);
   };
 
   return (
-
-    
     <Navbar
       variant="dark"
       expand="lg"
@@ -112,7 +104,7 @@ const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isS
               <FaUser />
             </Nav.Link>
             <Nav.Link onClick={handleCartDrawerToggle}>
-              <FaShoppingBag />
+              <FaShoppingBag /> <span className="badge bg-secondary">{cartItemCount}</span>
             </Nav.Link>
           </div>
         </Nav>
@@ -120,8 +112,7 @@ const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isS
         <Navbar.Collapse id="basic-navbar-nav" className="d-none d-lg-flex">
           <Nav className="ms-auto">
             <Nav.Link href={`/`}>HOME</Nav.Link>
-            <Nav.Link href={`/products`}>SHOP</Nav.Link>     
-            {/* <Nav.Link href="#projects">ABOUT US</Nav.Link> */}
+            <Nav.Link href={`/products`}>SHOP</Nav.Link>
             {user && <Nav.Link href={`/my-orders`}>MY ORDERS</Nav.Link>}
           </Nav>
         </Navbar.Collapse>
@@ -137,7 +128,7 @@ const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isS
             </Nav.Link>
           )}
           <Nav.Link onClick={handleCartDrawerToggle}>
-            <FaShoppingBag />
+            <FaShoppingBag /> <span className="badge bg-secondary">{cartItemCount}</span>
           </Nav.Link>
         </Nav>
 
@@ -148,12 +139,12 @@ const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isS
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
               <Nav.Item>
-              <Nav.Link href={`/`}>HOME</Nav.Link>
-            <Nav.Link href={`/products`}>SHOP</Nav.Link>  
+                <Nav.Link href={`/`}>HOME</Nav.Link>
+                <Nav.Link href={`/products`}>SHOP</Nav.Link>
               </Nav.Item>
               {user && (
                 <Nav.Item>
-               {user && <Nav.Link href={`/my-orders`}>MY ORDERS</Nav.Link>}
+                  {user && <Nav.Link href={`/my-orders`}>MY ORDERS</Nav.Link>}
                 </Nav.Item>
               )}
             </Nav>
@@ -168,8 +159,3 @@ const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isS
     </Navbar>
   );
 }
-
-
-//LILO loggan ändra färg?
-// ikoner horisontellt
-// bort med ringen runt menyn
