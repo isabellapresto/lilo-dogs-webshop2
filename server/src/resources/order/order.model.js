@@ -10,6 +10,7 @@ const cartItemSchema = new mongoose.Schema({
  
 const orderSchema = new mongoose.Schema({
   cart: [cartItemSchema],
+  orderDate: { type: Date, default: Date.now } 
 
 });
 

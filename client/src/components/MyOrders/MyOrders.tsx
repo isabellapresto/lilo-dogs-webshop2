@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import "./MyOrders.css"
+import './MyOrders.css';
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -7,7 +7,6 @@ const MyOrders = () => {
 
   useEffect(() => {
     const loggedInUsername = getLoggedInUsername();
-    console.log('Logged-in username :) :', loggedInUsername);
 
     fetch(`http://localhost:3001/api/orders/all-orders/${loggedInUsername}`)
       .then(response => {
@@ -26,28 +25,31 @@ const MyOrders = () => {
 
   return (
     <div className="order-container container mt-4">
-      <h2>ORDER HISTORY</h2>
-      <ul className="list-group list-group-flush">
-        {orders.map(order => (
-          <li key={order._id} className="list-group-item">
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                <p>Purchase Date: {new Date(order.purchaseDate).toLocaleDateString()}</p>
-                <ul>
-                  {order.cart.map(item => (
-                    <li key={item._id}>
-                      <p>{item.productName}</p>
-                      <p>Price: {item.price}</p>
-                      <p>Quantity: {item.quantity}</p>
-                    </li>
-                  ))}
-                </ul>
-                <p>Total price:</p>
-              </div>
+      <h2 className="mb-4">ORDER HISTORY</h2>
+      {orders.length === 0 ? (
+        <h5>You have no order history yet.</h5>
+      ) : (
+        orders.map(order => (
+          <div key={order._id} className="card mb-4">
+            <div className="card-header">
+              <h5>Purchase Date: {new Date(order.orderDate).toLocaleDateString()}</h5>
             </div>
-          </li>
-        ))}
-      </ul>
+            <div className="card-body">
+              <ul className="list-group list-group-flush">
+                {order.cart.map(item => (
+                  <li key={item._id} className="list-group-item">
+                    <p>Order Id: {item._id}</p>
+                    <p>{item.productName}</p>
+                    <p>Price: {item.price}</p>
+                    <p>Quantity: {item.quantity}</p>
+                  </li>
+                ))}
+              </ul>
+              {/* <p className="mt-3">Total price:</p> */}
+            </div>
+          </div>
+        ))
+      )}
     </div>
   );
 };

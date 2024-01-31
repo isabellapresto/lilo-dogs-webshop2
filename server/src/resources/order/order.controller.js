@@ -29,6 +29,7 @@ const verifySession = async (req, res) => {
       price: item.product.price,
     
       quantity: item.quantity,
+      orderDate: new Date()
     
     }));
 
