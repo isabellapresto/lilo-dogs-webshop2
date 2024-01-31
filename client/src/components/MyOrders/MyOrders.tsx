@@ -6,6 +6,9 @@ const MyOrders = () => {
   const loggedInUsername = getLoggedInUsername();
 
   useEffect(() => {
+    const loggedInUsername = getLoggedInUsername();
+    console.log('Logged-in username :) :', loggedInUsername);
+
     fetch(`http://localhost:3001/api/orders/all-orders/${loggedInUsername}`)
       .then(response => {
         if (!response.ok) {

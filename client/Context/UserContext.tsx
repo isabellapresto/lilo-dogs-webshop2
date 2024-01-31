@@ -13,6 +13,8 @@ interface User {
 }
 
 
+
+
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -24,7 +26,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = (userData: User) => {
     console.log('Användaren har loggat in:', userData);
+    
+    // Spara användarinformation i session storage vid inloggning
+    sessionStorage.setItem('loggedInUser', JSON.stringify({ ...userData, isLoggedIn: true }));
+  
+    // Sätt användarinformationen i state
     setUser({ ...userData, isLoggedIn: true });
+  
     // Spara användarinformation i en cookie vid inloggning
     document.cookie = `user=${JSON.stringify({ ...userData, isLoggedIn: true })}; path=/`;
   };

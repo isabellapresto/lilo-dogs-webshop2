@@ -113,7 +113,7 @@ async function getAllOrdersForUser(req, res) {
   try {
     console.log('Försöker hämta ordrar för användare:', loggedInUsername);
 
-    const orders = await Order.find({ 'cartItemSchema.customer': loggedInUsername }).exec();
+    const orders = await Order.find({ 'cart.customer': loggedInUsername }).exec();
 
 
 

@@ -7,11 +7,11 @@ import {  CartProvider } from "../Context/CartContext.tsx"
 import { UserProvider } from "../Context/UserContext.tsx"
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <UserProvider>
     <CartProvider>
     <App />
     </CartProvider>
     </UserProvider>
-  </React.StrictMode>,
+  // </React.StrictMode>,
 )
