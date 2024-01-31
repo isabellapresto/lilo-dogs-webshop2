@@ -20,7 +20,7 @@ const CartItems: React.FC<CartItemsProps> = ({ cartItems }) => {
 
   return (
     <div>
-      <ListGroup>
+      <ListGroup >
       {cartItems.map(({ product, quantity }, index) => (
   <ListGroup.Item key={index}>
     <div className="d-flex align-items-center">

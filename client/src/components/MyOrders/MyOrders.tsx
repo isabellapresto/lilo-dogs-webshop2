@@ -29,7 +29,6 @@ const MyOrders = () => {
           <li key={order._id} className="list-group-item">
             <div className="d-flex justify-content-between align-items-center">
               <div>
-                {/* <h5>Purchase Id: {order._id}</h5> */}
                 <p>Purchase Date: {new Date(order.purchaseDate).toLocaleDateString()}</p>
                 <ul>
                   {order.cart.map(item => (
@@ -37,7 +36,6 @@ const MyOrders = () => {
                       <p>{item.productName}</p>
                       <p>Price: {item.price}</p>
                       <p>Quantity: {item.quantity}</p>
-                      {/* Lägg till andra egenskaper från CartItem om det behövs */}
                     </li>
                   ))}
                 </ul>
@@ -52,9 +50,14 @@ const MyOrders = () => {
 };
 
 const getLoggedInUsername = () => {
-  // Implementera logiken för att hämta aktuell inloggad användare här
-  // Till exempel: returnera användarnamnet från din autentiseringsstatus eller sessionsinformation
-  return 'isabella.presto@gmail.com'; // Ersätt detta med din implementering
+  const loggedInUserString = sessionStorage.getItem('loggedInUser');
+
+  if (loggedInUserString) {
+    const loggedInUser = JSON.parse(loggedInUserString);
+    return loggedInUser.username;
+  } else {
+    return null;
+  }
 };
 
 export default MyOrders;

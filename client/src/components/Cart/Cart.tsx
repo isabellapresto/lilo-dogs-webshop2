@@ -14,9 +14,10 @@ const Cart = ({ show, onHide }) => {
 
   useEffect(() => { console.log(cartItems); }, [cartItems]);
 
+
   // Totalpris
   const calculateTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    return cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
   };
 
   const handleContinueShopping = () => {
@@ -39,6 +40,7 @@ const Cart = ({ show, onHide }) => {
           <>
             <CartItems  cartItems = {cartItems}/>
             <div>Total Price: €{calculateTotalPrice()}</div>
+          
             <div style={{ marginBottom: '10px' }}>
               {/* Länk för att fortsätta shoppa */}
               <Link to={`/products`} className="continue-shopping-link" onClick={handleContinueShopping}>

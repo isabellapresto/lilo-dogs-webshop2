@@ -21,8 +21,8 @@ export default function LoginModal({ show, onHide, onSwitchToRegister }) {
   
       if (response.ok) {
         const userData = await response.json();
-        console.log('Användarobjekt:', userData.user); // notera .user här
-        login(userData.user); // notera .user här
+        console.log('Användarobjekt:', userData.user); 
+        login(userData.user); 
         onHide();
       } else {
         const errorData = await response.json();
