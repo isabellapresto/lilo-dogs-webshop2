@@ -148,25 +148,12 @@ const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isS
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
               <Nav.Item>
-                <Nav.Link href="#" active>
-                  HOME
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link href="#">
-                  SHOP
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link href="#" as="span">
-                  ABOUT US
-                </Nav.Link>
+              <Nav.Link href={`/`}>HOME</Nav.Link>
+            <Nav.Link href={`/products`}>SHOP</Nav.Link>  
               </Nav.Item>
               {user && (
                 <Nav.Item>
-                  <Nav.Link href="#orders">
-                    MY ORDERS
-                  </Nav.Link>
+               {user && <Nav.Link href={`/my-orders`}>MY ORDERS</Nav.Link>}
                 </Nav.Item>
               )}
             </Nav>

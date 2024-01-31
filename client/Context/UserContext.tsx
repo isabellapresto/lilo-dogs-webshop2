@@ -7,23 +7,28 @@ interface UserContextProps {
 }
 
 interface User {
-  isLoggedIn: User | null;
+  isLoggedIn: boolean;
   id: string;
   username: string;
 }
 
+
 const UserContext = createContext<UserContextProps | undefined>(undefined);
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    const userCookie = document.cookie.replace(/(?:(?:^|.*;\s*)user\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    return userCookie ? JSON.parse(userCookie) : null;
+  });
 
 
   const login = (userData: User) => {
     console.log('Användaren har loggat in:', userData);
-    setUser(userData);
+    setUser({ ...userData, isLoggedIn: true });
     // Spara användarinformation i en cookie vid inloggning
-    document.cookie = `user=${JSON.stringify(userData)}; path=/`;
+    document.cookie = `user=${JSON.stringify({ ...userData, isLoggedIn: true })}; path=/`;
   };
+  
 
   const logout = () => {
     console.log('Användaren har loggat ut');
@@ -31,6 +36,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Ta bort användarinformation från cookien vid utloggning
     document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   };
+  
 
   return (
     <UserContext.Provider value={{ user, login, logout }}>
