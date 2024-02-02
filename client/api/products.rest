@@ -1,16 +1,14 @@
-
-GET http://localhost:3001/api/products
 // collection ligger under test
+//Hämta alla produkter
+GET http://localhost:3001/api/products
 
-###
-
+###Hämta produkt på id
 GET http://localhost:3001/api/products/6596efc4979f570f698b5662
 
-###
-
+###Hämta kategori
 GET http://localhost:3001/api/products/category/sleep
-###
 
+###Skapa order
 POST http://localhost:3001/api/orders/create-order
 Content-Type: application/json
 
@@ -27,5 +25,4 @@ Content-Type: application/json
     "price": 15,
     "quantity": 1
   }
-
 ]

@@ -5,8 +5,6 @@ import { useCart } from '../../../Context/CartContext';
 const CheckOutBtn: React.FC = () => {
   const { handlePayment } = useCart();
 
-  
-
   return (
     <Button variant="dark" onClick={handlePayment}>
       Checkout

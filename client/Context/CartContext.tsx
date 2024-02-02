@@ -17,6 +17,7 @@ const useLocalStorage = (key: string, initialValue: never[]) => {
   return [value, setStoredValue];
 };
 
+// Context för varukorgen
 const CartContext = createContext<CartContextProps | undefined>(undefined);
 
 interface CartContextProps {
@@ -28,37 +29,38 @@ interface CartContextProps {
   increaseQuantity: (productId: string) => void;
   decreaseQuantity: (productId: string) => void;
   handlePayment: () => void;
+  
   setCartItems: Dispatch<SetStateAction<CartItem[]>>;
   cartItemCount: number;
 }
 
-
-
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  //useLocalStorage-hook för att spara varukorgen
   const [cartItems, setCartItems] = useLocalStorage('shopping-cart', []);
   const [cartItemCount, setCartItemCount] = useState(0);
 
+  //Beräkna antalet produkter i varukorgen
   const getCartItemCount = () => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
+  // Uppdatera cartItemCount när cartItems ändras
   useEffect(() => {
-    // Uppdatera cartItemCount när cartItems ändras
     setCartItemCount(getCartItemCount());
   }, [cartItems]);
 
   // Funktion för att lägga till en produkt i varukorgen
   const addToCart = (product: Product, quantity: number) => {
     const cartItem: CartItem= {
-      quantity: quantity, product: product,
+      quantity: quantity,
+      product: product,
       _id: '',
       price: 0
     };
+
     const updatedCart = [...cartItems, { ...cartItem, quantity }];
+
     setCartItems(updatedCart);
     setCartItemCount(getCartItemCount() + quantity);
-    console.log("updated cart!!!!", updatedCart)
   };
 
   // Funktion för att uppdatera kvantiteten av en produkt i varukorgen
@@ -79,10 +81,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Funktion för att öka kvantiteten av en produkt i varukorgen
   const increaseQuantity = (productId: string) => {
-    const product = cartItems.find((item: { product: { _id: string; }; }) => item.product._id === productId);
+    const product = cartItems.find((item: { product: { _Id: string; }; }) => item.product._Id === productId);
     if (product) {
       updateQuantity(productId, product.quantity + 1);
-      
     }
   };
 
@@ -94,7 +95,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  //Handle payment- redirect to Stripe
+  // Funktion för att hantera betalning och omdirigera till Stripe
   async function handlePayment() {
     const response = await fetch("http://localhost:3001/api/orders/create-checkout-session", {
       method: "POST",
@@ -104,70 +105,58 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       body: JSON.stringify({ cartItems }),
     });
  
-    //Save session id to localStorage
+    // Hämta session-id från svaret och spara det i localStorage
     const { url, id } = await response.json();
     localStorage.setItem("session-id", id);
 
-
-    setTimeout(() => {
-      window.location =url
-      }, 2000);
-    
+    // Omdirigera till Stripe Checkout efter en fördröjning på 2 sekunder
+    // setTimeout(() => {
+      window.location.replace(url);
+    // }, 2000);
   }
 
+  // Funktion för att skapa en beställning och omdirigera till Stripe Checkout
+  const createOrder = async () => {
+    try {
+      // Skapa en beställning genom att skicka varukorgen till servern
+      const response = await fetch('http://localhost:3001/api/orders/create-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cartItems })
+      });
 
+      if (response.ok) {
+        // Hämta orderdata från svaret
+        const orderData = await response.json();
+        // Hämta sessionId från orderData för omdirigering till Stripe Checkout
+        const { sessionId } = orderData || {};
 
+        // Kontrollera att sessionId är definierad
+        if (!sessionId) {
+          console.error('sessionId is undefined in orderData:', orderData);
+          return;
+        }
 
-
-  
-// Funktion skapa beställning och omdirigea till Stripe Checkout 
-const createOrder = async () => {
-  try {
-    // Skapa en beställning
-    console.log('Sending cartItems:', cartItems);
-    const response = await fetch('http://localhost:3001/api/orders/create-order', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ cartItems })
-    
-    });
-
-    if (response.ok) {
- 
-      const orderData = await response.json();
-
-      // Hämta sessionId från orderData för omdirigering till Stripe Checkout
-      const { sessionId } = orderData || {};
-
-      // Kontrollera att sessionId är definierad
-      if (!sessionId) {
-        console.error('sessionId is undefined in orderData:', orderData);
-    
-        return;
-      }
-
-      // Omdirigering till Stripe Checkout med hjälp av sessionId
-      window.location.href = `https://checkout.stripe.com/checkout/session/${sessionId}`;
+        // Omdirigera till Stripe Checkout med sessionId
+        window.location.href = `https://checkout.stripe.com/checkout/session/${sessionId}`;
      
-      clearCart();
-   
-    } else {
-      console.error('Failed to create order.');
-      
+        // Rensa varukorgen 
+        clearCart();
+      } else {
+        console.error('Failed to create order.');
+      }
+    } catch (error) {
+      console.error('An error occurred:', error);
     }
-  } catch (error) {
-    console.error('An error occurred:', error);
-   
-  }
-};
-const clearCart = () => {
-  setCartItems([]); 
-  setCartItemCount(0); 
-};
+  };
 
-
+  // Funktion för att rensa varukorgen
+  const clearCart = () => {
+    setCartItems([]); 
+    setCartItemCount(0); 
+  };
 
   return (
     <CartContext.Provider value={{ cartItems, setCartItems, addToCart, updateQuantity, removeProduct, createOrder, increaseQuantity, decreaseQuantity, handlePayment, cartItemCount }}>

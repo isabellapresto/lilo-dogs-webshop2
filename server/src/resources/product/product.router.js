@@ -8,5 +8,4 @@ router
   .get('/products', productController.getAllProducts)
   .get('/products/category/:category', productController.getProductsByCategory);
 
-
 module.exports = router;

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
 
-export default function RegisterModal({ show, onHide, onSwitchToLogin }) {
+export default function RegisterModal({ show, onHide, onSwitchToLogin }) {  //Röda men funkar
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

@@ -4,25 +4,27 @@ import { Product } from '../../Interfaces/ProductInterfaces';
 import { useCart } from '../../../Context/CartContext'; 
 import "./ProductDetails.css"
 
-
 const ProductDetails: React.FC = () => {
   const { id } = useParams();
+
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
+  // Öka kvantiteten
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
   };
 
+  // Minska kvantiteten (minst 1)
   const decreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   };
 
+  // Lägga till produkten i varukorgen
   const addToCartHandler = () => {
-    console.log (product)
     if (product) {
       addToCart(product, quantity);
     }

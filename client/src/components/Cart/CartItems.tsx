@@ -14,35 +14,34 @@ const CartItems: React.FC<CartItemsProps> = ({ cartItems }) => {
   }, [cartItems]);
 
   const handleRemove = (productId: string) => {
-    console.log("Removing product with ID:", productId);
+    console.log('Removing product with ID:', productId);
     removeProduct(productId);
   };
 
   return (
     <div>
-      <ListGroup >
-      {cartItems.map(({ product, quantity }, index) => (
-  <ListGroup.Item key={index}>
-    <div className="d-flex align-items-center">
-      <Image
-        src={product?.image}
-        alt={product?.productName}
-        thumbnail
-        className="mr-3"
-        style={{ maxWidth: '100px', maxHeight: '100px' }}
-      />
-      <div>
-        <h5>{product?.productName}</h5>
-        <button onClick={() => decreaseQuantity(product?._id)}>-</button>
-        <span className="quantity">{quantity}</span>
-        <button onClick={() => increaseQuantity(product?._id)}>+</button>
-        <button onClick={() => handleRemove(product?._id)}>Remove</button>
-        <h6>€ {product?.price * quantity}</h6>
-      </div>
-    </div>
-  </ListGroup.Item>
-))}
-
+      <ListGroup>
+        {cartItems.map(({ product, quantity }, index) => (
+          <ListGroup.Item key={index}>
+            <div className="d-flex align-items-center">
+              <Image
+                src={product?.image}
+                alt={product?.productName}
+                thumbnail
+                className="mr-3"
+                style={{ maxWidth: '100px', maxHeight: '100px' }}
+              />
+              <div>
+                <h5>{product?.productName}</h5>
+                <button onClick={() => decreaseQuantity(product?._id)}>-</button>
+                <span className="quantity">{quantity}</span>
+                <button onClick={() => increaseQuantity(product?._id)}>+</button>
+                <button onClick={() => handleRemove(product?._id)}>Remove</button>
+                <h6>€ {product?.price * quantity}</h6>
+              </div>
+            </div>
+          </ListGroup.Item>
+        ))}
       </ListGroup>
     </div>
   );

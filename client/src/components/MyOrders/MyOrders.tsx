@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './MyOrders.css';
 
 const MyOrders = () => {
@@ -6,26 +6,28 @@ const MyOrders = () => {
   const loggedInUsername = getLoggedInUsername();
 
   useEffect(() => {
-    const loggedInUsername = getLoggedInUsername();
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/orders/all-orders/${loggedInUsername}`);
 
-    fetch(`http://localhost:3001/api/orders/all-orders/${loggedInUsername}`)
-      .then(response => {
         if (!response.ok) {
           throw new Error(`Något gick fel - ${response.status}`);
         }
-        return response.json();
-      })
-      .then(data => {
+
+        const data = await response.json();
         setOrders(data);
-      })
-      .catch(error => {
-        console.error('Fel vid hämtning av ordrar:', error.message);
-      });
+      } catch (error) {
+        console.error('Fel vid hämtning av ordrar');
+      }
+    };
+
+    fetchOrders();
   }, [loggedInUsername]);
 
   return (
     <div className="order-container container mt-4">
       <h2 className="mb-4">ORDER HISTORY</h2>
+
       {orders.length === 0 ? (
         <h5>You have no order history yet.</h5>
       ) : (
@@ -45,7 +47,6 @@ const MyOrders = () => {
                   </li>
                 ))}
               </ul>
-              {/* <p className="mt-3">Total price:</p> */}
             </div>
           </div>
         ))

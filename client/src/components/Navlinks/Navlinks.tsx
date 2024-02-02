@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, Offcanvas } from 'react-bootstrap';
 import { FaBars, FaUser, FaShoppingBag } from 'react-icons/fa';
 import LogoWhite from "../../assets/logo/logo-white.png";
@@ -7,7 +7,7 @@ import Cart from '../Cart/Cart';
 import LoginModal from '../LoginModal/LoginModal';
 import RegisterModal from '../RegisterModal/RegisterModal';
 import { useUser } from "../../../Context/UserContext";
-import { useCart } from "../../../Context/CartContext"; // Importera useCart från CartContext
+import { useCart } from "../../../Context/CartContext";
 
 export default function Navlinks() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -16,9 +16,11 @@ export default function Navlinks() {
   const [scrolling, setScrolling] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
-  const { user } = useUser();
-  const { cartItemCount } = useCart(); // Använd useCart för att få cartItemCount
 
+  const { user } = useUser();
+  const { cartItemCount } = useCart(); 
+
+  // Effekt för att hantera scroll-event och ändra bakgrundsfärgen på navbar
   useEffect(() => {
     const handleScroll = () => {
       const isTop = window.scrollY < 200;
@@ -32,6 +34,7 @@ export default function Navlinks() {
     };
   }, []);
 
+  // Identifiera aktuell sökväg
   const currentPath = window.location.pathname;
   const isProductPage = currentPath.includes('/products');
   const isMyOrdersPage = currentPath.includes('/my-orders');
@@ -39,37 +42,45 @@ export default function Navlinks() {
   const isDetailsPage = currentPath.includes('/delivery-details');
   const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isSuccessPage || isDetailsPage;
 
+  // Hantera mobilmenyns öppning och stängning
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  // Hantera kundvagnens öppning och stängning
   const handleCartDrawerToggle = () => {
     setCartDrawerOpen(!cartDrawerOpen);
   };
 
+  // Hantera inloggningsmodalfönstrets öppning och stängning
   const handleLoginModalToggle = () => {
     setLoginModalOpen(!loginModalOpen);
   };
 
+  // Hantera registreringsmodalfönstrets öppning och stängning
   const handleRegisterModalToggle = () => {
     setRegisterModalOpen(!registerModalOpen);
   };
 
+  // Byt från inloggning till registrering
   const handleSwitchToRegister = () => {
     setLoginModalOpen(false);
     setRegisterModalOpen(true);
   };
 
+  // Byt från registrering till inloggning
   const handleSwitchToLogin = () => {
     setRegisterModalOpen(false);
     setLoginModalOpen(true);
   };
 
+  // Hantera inloggning
   const handleLogin = () => {
     setIsLoggedIn(true);
     setLoginModalOpen(false);
   };
 
+  // Hantera utloggning
   const handleLogout = () => {
     setIsLoggedIn(false);
   };
@@ -85,10 +96,12 @@ export default function Navlinks() {
       }}
     >
       <Container>
+        {/* Hamburgermeny-ikon för mobila enheter */}
         <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleMobileMenuToggle}>
           <FaBars />
         </Navbar.Toggle>
 
+        {/* Logga */}
         <Navbar.Brand className="ms-auto" href="#">
           <img
             alt="Logo"
@@ -104,27 +117,28 @@ export default function Navlinks() {
               <FaUser  />
             </Nav.Link>
             <Nav.Link onClick={handleCartDrawerToggle}>
-            <div style={{ position: 'relative', display: 'inline-block' }}>
-      <FaShoppingBag style={{ fontSize: '18px' }} />
-      {cartItemCount > 0 && (
-        <span
-          className="badge bg-secondary"
-          style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            fontSize: '10px',
-            transform: 'translate(50%, -50%)', // Centrerar vertikalt och horisontellt
-          }}
-        >
-          {cartItemCount}
-        </span>
-      )}
-    </div>
+              <div style={{ position: 'relative', display: 'inline-block' }}>
+                <FaShoppingBag style={{ fontSize: '18px' }} />
+                {cartItemCount > 0 && (
+                  <span
+                    className="badge bg-secondary"
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      fontSize: '10px',
+                      transform: 'translate(50%, -50%)', // Centrerar vertikalt och horisontellt
+                    }}
+                  >
+                    {cartItemCount}
+                  </span>
+                )}
+              </div>
             </Nav.Link>
           </div>
         </Nav>
 
+        {/* Meny för större skärmar */}
         <Navbar.Collapse id="basic-navbar-nav" className="d-none d-lg-flex">
           <Nav className="ms-auto">
             <Nav.Link href={`/`}>HOME</Nav.Link>
@@ -144,26 +158,27 @@ export default function Navlinks() {
             </Nav.Link>
           )}
           <Nav.Link onClick={handleCartDrawerToggle}>
-          <div style={{ position: 'relative', display: 'inline-block' }}>
-      <FaShoppingBag style={{ fontSize: '18px' }} />
-      {cartItemCount > 0 && (
-        <p
-          className="badge bg-secondary"
-          style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            fontSize: '10px',
-            transform: 'translate(50%, -50%)', // Centrerar vertikalt och horisontellt
-          }}
-        >
-          {cartItemCount}
-        </p>
-      )}
-    </div>
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+              <FaShoppingBag style={{ fontSize: '18px' }} />
+              {cartItemCount > 0 && (
+                <p
+                  className="badge bg-secondary"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    fontSize: '10px',
+                    transform: 'translate(50%, -50%)', 
+                  }}
+                >
+                  {cartItemCount}
+                </p>
+              )}
+            </div>
           </Nav.Link>
         </Nav>
 
+        {/* Offcanvas-meny för mobila enheter */}
         <Offcanvas show={mobileMenuOpen} onHide={() => setMobileMenuOpen(false)} placement="start">
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>MENU</Offcanvas.Title>
@@ -183,9 +198,13 @@ export default function Navlinks() {
           </Offcanvas.Body>
         </Offcanvas>
 
+        {/* Cart */}
         <Cart show={cartDrawerOpen} onHide={() => setCartDrawerOpen(false)} />
 
+        {/* Inloggningsmodal */}
         <LoginModal show={loginModalOpen} onHide={handleLoginModalToggle} onSwitchToRegister={handleSwitchToRegister} onLogin={handleLogin} />
+
+        {/* Registreringsmodal */}
         <RegisterModal show={registerModalOpen} onHide={handleRegisterModalToggle} onSwitchToLogin={handleSwitchToLogin} />
       </Container>
     </Navbar>
