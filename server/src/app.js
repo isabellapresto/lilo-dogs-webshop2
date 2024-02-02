@@ -10,16 +10,16 @@ require('dotenv').config();
 const app = express();
 
 app.use(cors()); 
-
 app.use(express.json());
 
+//Cookie
 app.use(
   session({
     name: 'session',
     secret: ['ea1e54fba531dff2e1f00bb18fafdf5a234e6c1d418748f9b08b946ed17fb7a2'], 
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 }, // 24 hours
+    cookie: { maxAge: 24 * 60 * 60 * 1000 }, 
   })
 );
 

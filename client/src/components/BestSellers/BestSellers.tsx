@@ -60,9 +60,6 @@ export default function BestSellers() {
           </div>
 
           <div className="text-center">
-            {/* <Link to="/all-products" className="align-middle text-center btn-steps mt-2 btn btn-lg btn-outline-dark" role="button">
-              View All Collection
-            </Link> */}
           </div>
         </div>
       </section>

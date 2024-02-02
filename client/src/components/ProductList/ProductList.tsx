@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import './ProductList.css';
 
 const ProductList: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,7 +28,6 @@ const ProductList: React.FC = () => {
 
   return (
     <div className="product-list-container container mt-4">
-      {/* <h2 className="text-center">Product List</h2> */}
       <div className="row">
         {products.map(product => (
           <div key={product._id} className="col-md-4 mb-4">

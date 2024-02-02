@@ -1,60 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import "./MyOrders.css"
+import { useState, useEffect } from 'react';
+import './MyOrders.css';
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
   const loggedInUsername = getLoggedInUsername();
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/orders/all-orders/${loggedInUsername}`)
-      .then(response => {
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/api/orders/all-orders/${loggedInUsername}`);
+
         if (!response.ok) {
           throw new Error(`Något gick fel - ${response.status}`);
         }
-        return response.json();
-      })
-      .then(data => {
+
+        const data = await response.json();
         setOrders(data);
-      })
-      .catch(error => {
-        console.error('Fel vid hämtning av ordrar:', error.message);
-      });
+      } catch (error) {
+        console.error('Fel vid hämtning av ordrar');
+      }
+    };
+
+    fetchOrders();
   }, [loggedInUsername]);
 
   return (
     <div className="order-container container mt-4">
-      <h2>ORDER HISTORY</h2>
-      <ul className="list-group list-group-flush">
-        {orders.map(order => (
-          <li key={order._id} className="list-group-item">
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                {/* <h5>Purchase Id: {order._id}</h5> */}
-                <p>Purchase Date: {new Date(order.purchaseDate).toLocaleDateString()}</p>
-                <ul>
-                  {order.cart.map(item => (
-                    <li key={item._id}>
-                      <p>{item.productName}</p>
-                      <p>Price: {item.price}</p>
-                      <p>Quantity: {item.quantity}</p>
-                      {/* Lägg till andra egenskaper från CartItem om det behövs */}
-                    </li>
-                  ))}
-                </ul>
-                <p>Total price:</p>
-              </div>
+      <h2 className="mb-4">ORDER HISTORY</h2>
+
+      {orders.length === 0 ? (
+        <h5>You have no order history yet.</h5>
+      ) : (
+        orders.map(order => (
+          <div key={order._id} className="card mb-4">
+            <div className="card-header">
+              <h5>Purchase Date: {new Date(order.orderDate).toLocaleDateString()}</h5>
             </div>
-          </li>
-        ))}
-      </ul>
+            <div className="card-body">
+              <ul className="list-group list-group-flush">
+                {order.cart.map(item => (
+                  <li key={item._id} className="list-group-item">
+                    <p>Order Id: {item._id}</p>
+                    <p>{item.productName}</p>
+                    <p>Price: {item.price}</p>
+                    <p>Quantity: {item.quantity}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))
+      )}
     </div>
   );
 };
 
 const getLoggedInUsername = () => {
-  // Implementera logiken för att hämta aktuell inloggad användare här
-  // Till exempel: returnera användarnamnet från din autentiseringsstatus eller sessionsinformation
-  return 'isabella.presto@gmail.com'; // Ersätt detta med din implementering
+  const loggedInUserString = sessionStorage.getItem('loggedInUser');
+
+  if (loggedInUserString) {
+    const loggedInUser = JSON.parse(loggedInUserString);
+    return loggedInUser.username;
+  } else {
+    return null;
+  }
 };
 
 export default MyOrders;

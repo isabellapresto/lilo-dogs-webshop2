@@ -12,15 +12,11 @@
  object-fit: cover;
 }
 
-
 .small {
  font-size: 0.8em; 
 }
 
 .product-list-container{
-
- 
   padding-top: 150px;
   padding-bottom: 150px;
-
 }

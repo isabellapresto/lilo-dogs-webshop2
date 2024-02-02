@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, Offcanvas } from 'react-bootstrap';
 import { FaBars, FaUser, FaShoppingBag } from 'react-icons/fa';
 import LogoWhite from "../../assets/logo/logo-white.png";
@@ -6,7 +6,8 @@ import "./NavLinks.css";
 import Cart from '../Cart/Cart';
 import LoginModal from '../LoginModal/LoginModal';
 import RegisterModal from '../RegisterModal/RegisterModal';
-import { useUser } from "../../../Context/UserContext"
+import { useUser } from "../../../Context/UserContext";
+import { useCart } from "../../../Context/CartContext";
 
 export default function Navlinks() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
@@ -15,8 +16,11 @@ export default function Navlinks() {
   const [scrolling, setScrolling] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
-  const { user } = useUser(); // Use the useUser hook to obtain user information
 
+  const { user } = useUser();
+  const { cartItemCount } = useCart(); 
+
+  // Effekt för att hantera scroll-event och ändra bakgrundsfärgen på navbar
   useEffect(() => {
     const handleScroll = () => {
       const isTop = window.scrollY < 200;
@@ -30,59 +34,58 @@ export default function Navlinks() {
     };
   }, []);
 
-    // Hämta den aktuella sökvägen från fönstret
-    const currentPath = window.location.pathname;
+  // Identifiera aktuell sökväg
+  const currentPath = window.location.pathname;
+  const isProductPage = currentPath.includes('/products');
+  const isMyOrdersPage = currentPath.includes('/my-orders');
+  const isSuccessPage = currentPath.includes('/success');
+  const isDetailsPage = currentPath.includes('/delivery-details');
+  const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isSuccessPage || isDetailsPage;
 
-    // bakrundsfärg på header 
-    const isProductPage = currentPath.includes('/products');
-const isMyOrdersPage = currentPath.includes('/my-orders');
-const isSuccessPage = currentPath.includes('/success');
-const isDetailsPage = currentPath.includes('/delivery-details');
-const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isSuccessPage || isDetailsPage;
-
-
+  // Hantera mobilmenyns öppning och stängning
   const handleMobileMenuToggle = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  // Hantera kundvagnens öppning och stängning
   const handleCartDrawerToggle = () => {
     setCartDrawerOpen(!cartDrawerOpen);
   };
 
+  // Hantera inloggningsmodalfönstrets öppning och stängning
   const handleLoginModalToggle = () => {
     setLoginModalOpen(!loginModalOpen);
   };
 
+  // Hantera registreringsmodalfönstrets öppning och stängning
   const handleRegisterModalToggle = () => {
     setRegisterModalOpen(!registerModalOpen);
   };
 
+  // Byt från inloggning till registrering
   const handleSwitchToRegister = () => {
     setLoginModalOpen(false);
     setRegisterModalOpen(true);
   };
 
+  // Byt från registrering till inloggning
   const handleSwitchToLogin = () => {
     setRegisterModalOpen(false);
     setLoginModalOpen(true);
   };
 
+  // Hantera inloggning
   const handleLogin = () => {
-    // Logic for handling successful login
-    // Set isLoggedIn to true and close the login modal
     setIsLoggedIn(true);
     setLoginModalOpen(false);
   };
 
+  // Hantera utloggning
   const handleLogout = () => {
-    // Logic for handling logout
-    // Set isLoggedIn to false
     setIsLoggedIn(false);
   };
 
   return (
-
-    
     <Navbar
       variant="dark"
       expand="lg"
@@ -93,10 +96,12 @@ const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isS
       }}
     >
       <Container>
+        {/* Hamburgermeny-ikon för mobila enheter */}
         <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleMobileMenuToggle}>
           <FaBars />
         </Navbar.Toggle>
 
+        {/* Logga */}
         <Navbar.Brand className="ms-auto" href="#">
           <img
             alt="Logo"
@@ -109,19 +114,35 @@ const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isS
         <Nav className="d-lg-none ms-auto me-3">
           <div className="d-flex">
             <Nav.Link onClick={handleLoginModalToggle} className="me-3">
-              <FaUser />
+              <FaUser  />
             </Nav.Link>
             <Nav.Link onClick={handleCartDrawerToggle}>
-              <FaShoppingBag />
+              <div style={{ position: 'relative', display: 'inline-block' }}>
+                <FaShoppingBag style={{ fontSize: '18px' }} />
+                {cartItemCount > 0 && (
+                  <span
+                    className="badge bg-secondary"
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      fontSize: '10px',
+                      transform: 'translate(50%, -50%)', // Centrerar vertikalt och horisontellt
+                    }}
+                  >
+                    {cartItemCount}
+                  </span>
+                )}
+              </div>
             </Nav.Link>
           </div>
         </Nav>
 
+        {/* Meny för större skärmar */}
         <Navbar.Collapse id="basic-navbar-nav" className="d-none d-lg-flex">
           <Nav className="ms-auto">
             <Nav.Link href={`/`}>HOME</Nav.Link>
-            <Nav.Link href={`/products`}>SHOP</Nav.Link>     
-            {/* <Nav.Link href="#projects">ABOUT US</Nav.Link> */}
+            <Nav.Link href={`/products`}>SHOP</Nav.Link>
             {user && <Nav.Link href={`/my-orders`}>MY ORDERS</Nav.Link>}
           </Nav>
         </Navbar.Collapse>
@@ -129,18 +150,35 @@ const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isS
         <Nav className="d-none d-lg-flex align-items-center">
           {isLoggedIn ? (
             <Nav.Link onClick={handleLogout} className="me-3">
-              <FaUser />
+              <FaUser  />
             </Nav.Link>
           ) : (
             <Nav.Link onClick={handleLoginModalToggle} className="me-3">
-              <FaUser />
+              <FaUser style={{ fontSize: '18px' }}  />
             </Nav.Link>
           )}
           <Nav.Link onClick={handleCartDrawerToggle}>
-            <FaShoppingBag />
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+              <FaShoppingBag style={{ fontSize: '18px' }} />
+              {cartItemCount > 0 && (
+                <p
+                  className="badge bg-secondary"
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    fontSize: '10px',
+                    transform: 'translate(50%, -50%)', 
+                  }}
+                >
+                  {cartItemCount}
+                </p>
+              )}
+            </div>
           </Nav.Link>
         </Nav>
 
+        {/* Offcanvas-meny för mobila enheter */}
         <Offcanvas show={mobileMenuOpen} onHide={() => setMobileMenuOpen(false)} placement="start">
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>MENU</Offcanvas.Title>
@@ -148,41 +186,27 @@ const isProductOrMyOrdersOrSuccessPage = isProductPage || isMyOrdersPage  || isS
           <Offcanvas.Body>
             <Nav className="justify-content-end flex-grow-1 pe-3">
               <Nav.Item>
-                <Nav.Link href="#" active>
-                  HOME
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link href="#">
-                  SHOP
-                </Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link href="#" as="span">
-                  ABOUT US
-                </Nav.Link>
+                <Nav.Link href={`/`}>HOME</Nav.Link>
+                <Nav.Link href={`/products`}>SHOP</Nav.Link>
               </Nav.Item>
               {user && (
                 <Nav.Item>
-                  <Nav.Link href="#orders">
-                    MY ORDERS
-                  </Nav.Link>
+                  {user && <Nav.Link href={`/my-orders`}>MY ORDERS</Nav.Link>}
                 </Nav.Item>
               )}
             </Nav>
           </Offcanvas.Body>
         </Offcanvas>
 
+        {/* Cart */}
         <Cart show={cartDrawerOpen} onHide={() => setCartDrawerOpen(false)} />
 
+        {/* Inloggningsmodal */}
         <LoginModal show={loginModalOpen} onHide={handleLoginModalToggle} onSwitchToRegister={handleSwitchToRegister} onLogin={handleLogin} />
+
+        {/* Registreringsmodal */}
         <RegisterModal show={registerModalOpen} onHide={handleRegisterModalToggle} onSwitchToLogin={handleSwitchToLogin} />
       </Container>
     </Navbar>
   );
 }
-
-
-//LILO loggan ändra färg?
-// ikoner horisontellt
-// bort med ringen runt menyn

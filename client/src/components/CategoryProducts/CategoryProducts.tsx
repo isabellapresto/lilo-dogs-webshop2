@@ -19,22 +19,17 @@ const CategoryProducts: React.FC = () => {
   
         const data = await response.json();
 
-  
-        setProducts(data);  // Uppdatera state med filtrerade produkter
+        setProducts(data);  
       } catch (error) {
         console.error(`Error fetching ${category} products:`, error);
       }
     };
-  
-
   
     fetchCategoryProducts();
   }, [category]);
 
   return (
     <div className="container mt-4">
-      {/* <h2 className="text-center">{category} Products</h2> */}
-      {/* Skicka bara filtrerade produkter till ProductList */}
       <ProductList products={products} />
     </div>
   );

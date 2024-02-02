@@ -12,39 +12,22 @@ html {scroll-behavior: smooth;}
 a { color: var(--primary-color); }
 a:hover { color: var(--primary-color); }
 
-/* width */
 ::-webkit-scrollbar {
   width: 14px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #FEF9EA; 
 }
  
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: var(--bs-dark); 
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
 
-
-/* 
-  @media (min-width: 544px)  {}
-  @media (min-width: 768px)  {}
-  @media (min-width: 992px)  {}
-  @media (min-width: 1200px) {}
-  @media (min-width: 1400px) {}
-  @media (min-width: 1600px) {} 
-*/
-
-/*
-* Custom Container
-*/
 .container-custom {
   width: 100%;
   padding: 0 1rem;
@@ -63,47 +46,15 @@ a:hover { color: var(--primary-color); }
   .container-custom { width: 1520px; }
 }
 
-/*
-* Main Header
-*/
 .header {
   z-index: 2;
 }
 
-/*
-* Flyout Navigation Bar
-*/
-/* #navbar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgb(255,247,231);
-  z-index: 4;
-} */
-
-/* .dropdown-nav__closeNavBtn {
-  position: absolute;
-  top: 20px;
-  right: 16px;
-  background-color: rgbA(255,255,255,0.6);
-}
-
-.dropdown-nav__container {
-  height: 100vh;
-  padding: 0 1rem;
-} */
-
-/*
-* Hero Section
-*/
 .hero {
   position: relative;
   height: 100vh;
   background-color: var(--primary-color);
   overflow: hidden;
-
 }
 
 @media (min-width: 1400px) {
@@ -137,8 +88,6 @@ a:hover { color: var(--primary-color); }
 
 .hero__content {
   z-index: 1;
-  /* color: #FEF9EA; */
-
 }
 
 .hero__content-width {
@@ -168,60 +117,12 @@ a:hover { color: var(--primary-color); }
   animation: bounce 1s infinite alternate;
 }
 
- 
-/* @keyframes bounce {
-  from {
-    transform: translateY(0px);
-  }
-  to {
-    transform: translateY(-10px);
-  }
-} */
-
-
-/*
-* Steps Section
-*/
-
-/* 
-@media (min-width: 544px) {
-  .steps {
-    padding-top: 80px;
-    padding-bottom: 80px;
-  }
-
-  .steps__section-thumbnail {
-    height: auto;
-  }
-}
- */
-
-/*
-* Footer
-*/
-/* .footer {
-  color: #FEF9EA!important;
-} */
-
-
-/* .footer .border-highlight {
-  border-top: 1px solid var(--primary-color-highlight);
-  color: #FEF9EA!important;
-} */
-
-
-
-
-/* //Alltid 100vh - header och footer */
-
 .app-container {
   display: flex;
   flex-direction: column;
   height: 100vh;
- 
 }
 
 .main-content {
   flex-grow: 1;
-
 }

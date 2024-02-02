@@ -2,32 +2,31 @@
 POST http://localhost:3001/api/users/register
 Content-Type: application/json
 
-
 {
-  "username": "Lilo1",
+  "username": "lilo@mail.com",
   "password": "123"
 }
 
-###
+###Logga in använndare
 POST http://localhost:3001/api/users/login
 Content-Type: application/json
 
 {
-  "username": "Isabella",
+  "username": "isabella.presto@gmail.com",
   "password": "123"
 }
-###
 
+### Logga ut användare
 POST http://localhost:3001/api/users/logout
 Content-Type: application/json
 
 {
-  "username": "Isabella",
+  "username": "isabella.presto@gmail.com",
   "password": "123"
 }
-###
 
 
+### Skapa order test
 POST http://localhost:3001/api/orders/create-order
 Content-Type: application/json
 
@@ -47,10 +46,7 @@ Content-Type: application/json
 
 ]
 
-###
-
-
-//funkar
+### Stripe checkout session test
 POST http://localhost:3001/api/orders/create-checkout-session
 Content-Type: application/json
 
@@ -75,8 +71,10 @@ Content-Type: application/json
    
   ]
 }
-###
+
+### Hämta alla ordrar
 GET  http://localhost:3001/api/orders/all-orders
-###
-GET http://localhost:3001/api/orders/all-orders/:isabella.presto@gmail.com
+
+### Alla ordrar för användare: isabella.presto@gmail.com
+GET localhost:3001/api/orders/all-orders/:isabella.presto@gmail.com
 ###

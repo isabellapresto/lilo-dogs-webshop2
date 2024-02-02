@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Modal, Form, Button } from 'react-bootstrap';
-import { useUser } from "../../../Context/UserContext"
+import { useUser } from '../../../Context/UserContext';
 
-
-export default function LoginModal({ show, onHide, onSwitchToRegister }) {
+export default function LoginModal({ show, onHide, onSwitchToRegister }) { //Röda men funkar 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { user, login, logout } = useUser(); // Hämta user, login och logout från useUser-hook
+  const { user, login, logout } = useUser();
 
   const handleLogin = async () => {
     try {
@@ -18,11 +17,11 @@ export default function LoginModal({ show, onHide, onSwitchToRegister }) {
         },
         body: JSON.stringify({ username, password }),
       });
-  
+
       if (response.ok) {
         const userData = await response.json();
-        console.log('Användarobjekt:', userData.user); // notera .user här
-        login(userData.user); // notera .user här
+        console.log('Användarobjekt:', userData.user);
+        login(userData.user);
         onHide();
       } else {
         const errorData = await response.json();
@@ -32,12 +31,9 @@ export default function LoginModal({ show, onHide, onSwitchToRegister }) {
       setError('Ett fel uppstod vid inloggning.');
     }
   };
-  
 
   const handleLogout = () => {
-    // Logga ut användaren
     logout();
-    // Eventuell annan logik för utloggning
   };
 
   return (
@@ -47,15 +43,13 @@ export default function LoginModal({ show, onHide, onSwitchToRegister }) {
       </Modal.Header>
       <Modal.Body>
         {user ? (
-          // Visa inloggningsstatus
           <>
-            <p>You are logged in with e-mail: { user.username}</p>
+            <p>You are logged in with e-mail: {user.username}</p>
             <Button variant="dark" onClick={handleLogout}>
               Log out
             </Button>
           </>
         ) : (
-          // Visa inloggningsformulär om användaren inte är inloggad
           <Form>
             <Form.Group controlId="formUsername" style={{ marginBottom: '10px' }}>
               <Form.Control
